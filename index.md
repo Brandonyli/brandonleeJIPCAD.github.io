@@ -1,4 +1,11 @@
-## A Dive into the Non-Orientable Manifold Editor
+## A Dive into NOME3: The Non-Orientable Manifold Editor
+
+NOM3 (Non-Orientable Manifold Editor) is an emerging new Computer-Aided-Design tool being developed by [Professor Carlo Sequin](https://people.eecs.berkeley.edu/~sequin/) and a team of undergraduate and graduate researchers at the University of California, Berkeley. It is specifically built to assist in the design of smooth but precise free-form geometries, such as those by artists like [Eva Hild](https://www.evahild.com/ceramics) or [Charles O. Perry](http://www.charlesperry.com/).
+
+The project is built using C++ as the backend, with a proprietary [NOME language](https://github.com/randyfan/NOME3/wiki/NOME3-Language-Reference) used as the medium in which users can build their creations.
+
+## Contributions to the NOME3 Project
+
 
 You can use the [editor on GitHub](https://github.com/Brandonyli/brandonyli.github.io/edit/main/index.md) to maintain and preview the content for your website in Markdown files.
 
