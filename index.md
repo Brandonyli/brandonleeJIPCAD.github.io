@@ -195,6 +195,7 @@ My generator was written in C++, and takes in a function of form z(x,y) along wi
 ![](./media/mainLineMesh.png)
 ![](./media/ripple.png) ![](./media/waves.png)
 ![](./media/plotSpinning.gif)
+
 The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/linemesh).
 
 ## About
