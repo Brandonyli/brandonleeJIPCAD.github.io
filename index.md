@@ -6,8 +6,8 @@ The project is built using C++ as the backend, with a proprietary [NOME language
 
 Table of Contents
 =================
-* [How does NOME3 work?](#How-does-NOME3-work?)
-* [My Contributions to the NOME3 Project](#[My-Contributions-to-the-NOME3-Project)
+* [How does NOME3 work?](#how-does-nome3-work?)
+* [My Contributions to the NOME3 Project](#my-contributions-to-the-nome3-project)
 
 
 ## How does NOME3 work?
