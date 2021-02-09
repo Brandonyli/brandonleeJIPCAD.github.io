@@ -185,6 +185,7 @@ This is my generator for a sphere, which was built in C++. It takes in 5 paramet
 #### The Scene
 ![](./media/sphere.png)
 ![](./media/sphereSegs.gif) ![](./media/sphereSideOpen.gif)
+![](./media/sphereFrontOpen.gif)
 
 The NOM file containing the C++ generator files and an example NOM file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/sphere).
 
