@@ -145,6 +145,36 @@ A Klein Bottle is a 2-dimensional manifold that has a non-orientable surface in 
 The bottom of the bottle has black-colored faces, which is a pecularity of the OpenMesh software in NOME3. Fear not, it is one continuous surface.
 ![](./media/bottlebottom.png)
 
+#### NOM Code Example
+This code was generated using a [Python Notebook](https://github.com/Brandonyli/brandonyli.github.io/blob/main/media/NOME%20File%20Generator%20Example.ipynb) and exported to a NOM file.
+````markdown
+  
+mesh m
+point pt_0_0 (4.0 -0.0 0.0) endpoint
+point pt_0_1 (3.95075 -0.0 0.62574) endpoint
+point pt_0_2 (3.80423 -0.0 1.23607) endpoint
+point pt_0_3 (3.56403 -0.0 1.81596) endpoint
+point pt_0_4 (3.23607 -0.0 2.35114) endpoint
+point pt_0_5 (2.82843 -0.0 2.82843) endpoint
+point pt_0_6 (2.35114 -0.0 3.23607) endpoint
+.
+.
+.
+face face_0_0 (pt_0_0 pt_1_0 pt_1_1 pt_0_1) endface
+face face_0_1 (pt_0_1 pt_1_1 pt_1_2 pt_0_2) endface
+face face_0_2 (pt_0_2 pt_1_2 pt_1_3 pt_0_3) endface
+face face_0_3 (pt_0_3 pt_1_3 pt_1_4 pt_0_4) endface
+face face_0_4 (pt_0_4 pt_1_4 pt_1_5 pt_0_5) endface
+face face_0_5 (pt_0_5 pt_1_5 pt_1_6 pt_0_6) endface
+face face_0_6 (pt_0_6 pt_1_6 pt_1_7 pt_0_7) endface
+.
+.
+.
+endmesh
+
+instance m1 m endinstance
+````
+
 The NOM file containing the code can be found [here](https://github.com/Brandonyli/brandonyli.github.io/blob/main/media/kleinbottle.nom), with accompanying [.ipynb file](https://github.com/Brandonyli/brandonyli.github.io/blob/main/media/NOME%20File%20Generator%20Example.ipynb).
 
 ### Generator: Sphere
@@ -195,6 +225,23 @@ My generator was written in C++, and takes in a function of form z(x,y) along wi
 ![](./media/mainLineMesh.png)
 ![](./media/ripple.png) ![](./media/waves.png)
 ![](./media/plotSpinning.gif)
+
+#### NOM Code Example
+````markdown
+linemesh "[7*x*y]/exp[[x^2]+[y^2]]" (-2 2 -2 2 40 40) endlinemesh
+instance example1 "[7*x*y]/exp[[x^2]+[y^2]]" endinstance
+
+
+linemesh "[[y^2]/1.5]-[[x^2]/2]" (-3 3 -3 3 40 40) endlinemesh
+instance example2 "[[y^2]/1.5]-[[x^2]/2]" translate (12 0 0) endinstance
+
+
+linemesh "sin[10[x^2+y^2]]/10" (-3 3 -3 3 300 300) endlinemesh
+instance example3 "sin[10[x^2+y^2]]/10" translate (-12 0 0) endinstance
+
+linemesh "sin[5x]*cos[5y]/5" (-3 3 -3 3 300 300) endlinemesh
+instance example4 "sin[5x]*cos[5y]/5" translate (0 -12 0) endinstance
+````
 
 The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/linemesh).
 
