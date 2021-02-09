@@ -51,7 +51,7 @@ instance d1 diamond scale (25 25 25) translate (0 0 -25) endinstance
 Generators in the NOME3 Project are built in C++. OpenMesh points and faces are used as the underlying data structures, and ANTLR4 is used to define and parse the proprietary NOME Language.
 
 An example of a typical Generator File in C++:
-```markdown
+```cpp
 DEFINE_META_OBJECT(CMobiusStrip)
 {
     BindPositionalArgument(&CMobiusStrip::N, 1, 0);
