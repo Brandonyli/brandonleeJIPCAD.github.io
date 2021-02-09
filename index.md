@@ -18,7 +18,10 @@ Table of Contents
 ### Introduction
 The NOME proprietary language is built around specifying meshes, groups, and instances. Meshes and groups can be turned into instances, which are then displayed on the UI.
 
-A mesh is any basic generator that is defined within NOME3. These basic generators can be found [here](https://github.com/randyfan/NOME3/wiki/NOME3-Language-Reference), and can be combined in order to create more advanced and geometrically complicated shapes. Basic generators have parameters that further specify their shape and look, which allows for more flexibility in design.
+A mesh is any basic generator that is defined within NOME3. These basic generators can be found [here](https://github.com/randyfan/NOME3/wiki/NOME3-Language-Reference), and can be combined in order to create more advanced and geometrically complicated shapes. Basic generators have parameters that further specify their shape and look, which allows for more flexibility in design. A call to a generator takes the form:
+```markdown
+generator name_of_generator (condition_1 condition_2 ...) endgenerator
+```
 
 A group is a number of meshes that have been 'grouped' together into a new mesh, that can then be treated as a singular mesh and have operations performed on. This allows for scalability in the design of more complicated shapes.
 
@@ -129,21 +132,34 @@ The NOM file containing the code can be found [here](https://github.com/Brandony
 A Klein Bottle is a 2-dimensional manifold that has a non-orientable surface in 3-dimensions. The Klein Bottle is interesting because the surface has no boundary (like a sphere), and instead the 'spout' of the bottle wraps into itself and creates a tunnel at the bottom of the 'bottle'. This Klein Bottle was built entirely using the NOME proprietary language, with a Python Notebook script generating the NOME language lines.
 
 #### The Scene
-![](main.png) ![](mainAlt.png)
+![](./media/main.png) ![](./media/mainAlt.png)
 
 #### The Spout and Bottom
-![](inside.gif)
+![](./media/inside.gif)
 
 The bottom of the bottle has black-colored faces, which is a pecularity of the OpenMesh software in NOME3. Fear not, it is one continuous surface.
-![](bottlebottom.png)
+![](./media/bottlebottom.png)
 
 The NOM file containing the code can be found [here](https://github.com/Brandonyli/brandonyli.github.io/blob/main/media/kleinbottle.nom), with accompanying [.ipynb file](https://github.com/Brandonyli/brandonyli.github.io/blob/main/media/NOME%20File%20Generator%20Example.ipynb).
 
 ### Generator: Sphere
+Generators are classes written in C++ mainly utilizing the OpenMesh package, which are called by the NOME proprietary language (by instantiating meshes and instances) in order to draw surfaces into the scene. Generators have various parameters that can be passed into them which control the shape and look of the output surface.
 This is my generator for a sphere, which was built in C++. It takes in 5 parameters that control the sphere's number of segments, radius, cut, etc.
 
 #### The Scene
-![](sphere.png)
-![](sphereSegs.gif) ![](sphereSideOpen.gif)
+![](./media/sphere.png)
+![](./media/sphereSegs.gif) ![](./media/sphereSideOpen.gif)
 
 The NOM file containing the C++ generator files and an example NOM file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/sphere).
+
+### Generator: Mobius Strip
+A basic Mobius Strip is a 1-sided surface in 3 dimensions with one boundary curve. It is considered the simplest non-orientable surface. Mobius Strips can have cuts parallel to the boundary curve (which increases the number of boundary curves in a Mobius Strip), and can also have more than one twist.
+My generator for a Mobius Strip, built in C++, takes in 4 parameters that control the Mobius Strip's number of segments, radius, number of twists, and number of cuts.
+
+#### The Scene
+
+The black and orange surfaces are the same 1-sided surface, but the OpenMesh package always defines both a front (orange) and back (black) side to a surface. In this case, since the front and back are the same surface they end up touching and looking like that.
+![](./media/normalSpin.gif) ![](./media/2cutMob.png)
+![](./media/mobiusStripParams.gif) ![](./media/fancySpins.gif)
+
+The NOM file containing the C++ generator files and an example NOM file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/mobiusstrip).
