@@ -1,6 +1,6 @@
 ## Brandon Lee's NOME3 Personal Contributions Repository
 
-Recruiters click here! --> https://brandonyli.github.io/
+### Recruiters click here! --> https://brandonyli.github.io/
 
 NOME3 (Non-Orientable Manifold Editor) is an emerging new Computer-Aided-Design tool being developed by Professor Carlo Sequin and a team of undergraduate and graduate researchers at the University of California, Berkeley.
 
