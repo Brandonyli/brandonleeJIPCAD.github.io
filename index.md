@@ -5,6 +5,8 @@ NOM3 (Non-Orientable Manifold Editor) is an emerging new Computer-Aided-Design t
 The project is built using C++ as the backend, with a proprietary [NOME language](https://github.com/randyfan/NOME3/wiki/NOME3-Language-Reference) used as the medium in which users can build their creations. The main up-to-date GitHub repository for the NOME3 Project, along with compilation and usage instructions, can be found [here](https://github.com/randyfan/NOME3).
 
 ## How does NOME3 work?
+
+### Introduction
 The NOME proprietary language is built around specifying meshes, groups, and instances. Meshes and groups can be turned into instances, which are then displayed on the UI.
 
 A mesh is any basic generator that is defined within NOME3. These basic generators can be found [here](https://github.com/randyfan/NOME3/wiki/NOME3-Language-Reference), and can be combined in order to create more advanced and geometrically complicated shapes. Basic generators have parameters that further specify their shape and look, which allows for more flexibility in design.
@@ -15,6 +17,7 @@ An instance of either a mesh or a group is created in order to actually bring an
 
 Further operations such as point selection, face deletion, line sweeps, subdivision, screen panning and rotation, etc.) can then be performed once the scene is loaded.
 
+### NOME Language Example
 An example of the interplay between meshes, groups, and instances can be seen here:
 ```markdown
 point p1 (0 2 1) endpoint
@@ -33,6 +36,69 @@ group diamond
 endgroup
 
 instance d1 diamond scale (25 25 25) translate (0 0 -25) endinstance
+```
+
+### Built in C++
+Generators in the NOME3 Project are built in C++. OpenMesh points and faces are used as the underlying data structures, and ANTLR4 is used to define and parse the proprietary NOME Language.
+
+An example of a typical Generator File in C++:
+```markdown
+DEFINE_META_OBJECT(CMobiusStrip)
+{
+    BindPositionalArgument(&CMobiusStrip::N, 1, 0);
+    BindPositionalArgument(&CMobiusStrip::Radius, 1, 1);
+    BindPositionalArgument(&CMobiusStrip::NumTwists, 1, 2);
+    BindPositionalArgument(&CMobiusStrip::NumCuts, 1, 3);
+}
+
+void CMobiusStrip::UpdateEntity()
+{
+    if (!IsDirty())
+        return;
+
+    Super::UpdateEntity();
+
+    // load in arguments to Mobius Strip generator
+    float n = (float)N.GetValue(100.0f); // number of individual points on each band
+    float radius = (float)Radius.GetValue(1.0f); // total radius
+    int numTwists = (int)ceil(NumTwists.GetValue(1.0f)); // number of twists
+    int numCuts = (int)ceil(NumCuts.GetValue(0.0f)); // number of times surface is cut
+    float bandwidth = 2*radius/((numCuts*2) + 1); // radius of each band
+
+    // create vertices
+    float uIncrement = (1.0f/n)*(float)tc::M_PI;
+    int uCounter = 0;
+    for (float u = 0.0f; u < 2.f * (float)tc::M_PI + uIncrement/3; u += uIncrement)
+    { // uIncrement/3 allows n+1 total vertices, accounting for rounding error (n+1th vertex == 0th vertex)
+        int vCounter = 0;
+        for (float v = -1*radius; v <= radius + bandwidth/3; v += bandwidth)
+        { // bandwidth/3 accounts for rounding error
+            float x = (1+(v/2.0f)*cosf((numTwists*u)/2.0f))*cosf(u);
+            float y = (1+(v/2.0f)*cosf((numTwists*u)/2.0f))*sinf(u);
+            float z = (v/2.0f)*sinf((numTwists*u)/2.0f);
+            AddVertex("v_" + std::to_string(uCounter) + "_" + std::to_string(vCounter), // name ex. "v_0_5"
+                      { x, y, z } );
+            vCounter++;
+        }
+        uCounter++;
+    }
+
+    // add faces
+    for (int uFaceCounter = 0; uFaceCounter + 1 < uCounter; uFaceCounter++)
+    {
+        for (int cut = 0; cut <= numCuts; cut++)
+        {
+            std::vector<std::string> face;
+
+            face.push_back("v_" + std::to_string(uFaceCounter) + "_" + std::to_string(2*cut)); //2*cut
+            face.push_back("v_" + std::to_string(uFaceCounter + 1) + "_" + std::to_string(2*cut));
+            face.push_back("v_" + std::to_string(uFaceCounter + 1) + "_" + std::to_string(2*cut+1)); //2*cut+1
+            face.push_back("v_" + std::to_string(uFaceCounter) + "_" + std::to_string(2*cut+1));
+
+            AddFace("f1_" + std::to_string(uFaceCounter) + "_" + std::to_string(cut), face);
+        }
+    }
+}
 ```
 
 ## My Contributions to the NOME3 Project
@@ -58,32 +124,17 @@ A Klein Bottle is a 2-dimensional manifold that has a non-orientable surface in 
 
 #### The 'spout' and bottom
 ![](inside.gif)
+
 The bottom of the bottle has black-colored faces, which is pecularity of the OpenMesh software in NOME3. Fear not, it is one continuous surface.
 ![](bottlebottom.png)
 
 The NOM file containing the code can be found [here](https://github.com/Brandonyli/brandonyli.github.io/blob/main/kleinbottle.nom), with accompanying [.ipynb file](https://github.com/Brandonyli/brandonyli.github.io/blob/main/NOME%20File%20Generator%20Example.ipynb).
 
+### Generator: Sphere
+This is my generator for a sphere, which was built in C++. It takes in 5 parameters that control the sphere's number of segments, radius, cut, etc.
 
-### Markdown
+#### The scene
+![](sphere.png)
+![](sphereSegs.gif) ![](sphereSideOpen.gif)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+The NOM file containing the C++ generator files and an example NOM file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/sphere).
