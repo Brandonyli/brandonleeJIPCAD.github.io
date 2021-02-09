@@ -1,0 +1,12 @@
+bank hyp_slider
+  set A 1.1 0.1 20 0.2
+  set C 1.1 0.1 20 0.2
+  set UMax 1.5 0.1 6 0.1
+  set UIncrement 10 5 200 5
+  set VIncrement 10 5 200 5
+  set Sheet 1 0 2 1
+endbank
+
+hyperboloid hyp1 ({expr $hyp_slider.A} {expr $hyp_slider.C} {expr $hyp_slider.UMax} {expr $hyp_slider.UIncrement} {expr $hyp_slider.VIncrement} {expr $hyp_slider.Sheet}) endhyperboloid
+
+instance hyperboloid1 hyp1 endinstance

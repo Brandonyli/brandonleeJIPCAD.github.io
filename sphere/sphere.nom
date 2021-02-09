@@ -1,0 +1,11 @@
+bank sphere_slider
+  set segments 20 3 100 1
+  set radius 1 0.1 10 0.1
+  set density 40 8 100 2
+  set degrees 360 0 360 1
+  set crossDegrees 360 0 360 1
+endbank
+
+sphere testsphere ({expr $sphere_slider.segments} {expr $sphere_slider.radius} {expr $sphere_slider.density} {expr $sphere_slider.degrees} {expr $sphere_slider.crossDegrees}) endsphere
+
+instance sphere1 testsphere endinstance
