@@ -37,7 +37,7 @@ instance d1 diamond scale (25 25 25) translate (0 0 -25) endinstance
 
 ## My Contributions to the NOME3 Project
 
-### Program Stress Test: Fractal Design
+### Stress Test: Fractal Design
 There are many steps that the NOME3 application goes through in order to generate an image. Upon loading in a file, NOME3 will parse the NOME language files and call the correct generator classes, create and calcualte the position of underlying OpenMesh points and faces, update with user-specified settings, and then draw them into the scene. This is very resource-intensive, and as such NOME3 is prone to crashes.
 
 My first task was to build a stress test model in order to test the capabilities of the rendering packages that NOME3 uses. My design was 3 recursive repetitions of 3-dimensional diamonds made up of triangle instances surrounded by four toruses. This fractal display was built entirely using the NOME proprietary language.
@@ -49,6 +49,20 @@ My first task was to build a stress test model in order to test the capabilities
 ![](hw1FractalPic.png) ![](hw1-fractal-view-2.gif)
 
 The NOM file containing the code can be found [here](https://github.com/Brandonyli/brandonyli.github.io/blob/main/hw1.nom).
+
+### Stress Test: Klein Bottle
+A Klein Bottle is a 2-dimensional manifold that has a non-orientable surface in 3-dimensions. The Klein Bottle is interesting because the surface has no boundary (like a sphere), and instead the 'spout' of the bottle wraps into itself and creates a tunnel at the bottom of the 'bottle'. This Klein Bottle was built entirely using the NOME proprietary language, with a Python Notebook script generating the NOME language lines.
+
+#### The scene
+![](main.png) ![](mainAlt.png)
+
+#### The 'spout' and bottom
+![](inside.gif)
+The bottom of the bottle has black-colored faces, which is pecularity of the OpenMesh software in NOME3. Fear not, it is one continuous surface.
+![](bottlebottom.png)
+
+The NOM file containing the code can be found [here](https://github.com/Brandonyli/brandonyli.github.io/blob/main/kleinbottle.nom).
+
 
 ### Markdown
 
@@ -73,12 +87,3 @@ Syntax highlighted code block
 ```
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-![SphereGif](sphereFrontOpen.gif)
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Brandonyli/brandonyli.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
