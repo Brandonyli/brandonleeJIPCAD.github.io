@@ -134,7 +134,7 @@ A Klein Bottle is a 2-dimensional manifold that has a non-orientable surface in 
 #### The 'spout' and bottom
 ![](inside.gif)
 
-The bottom of the bottle has black-colored faces, which is pecularity of the OpenMesh software in NOME3. Fear not, it is one continuous surface.
+The bottom of the bottle has black-colored faces, which is a pecularity of the OpenMesh software in NOME3. Fear not, it is one continuous surface.
 ![](bottlebottom.png)
 
 The NOM file containing the code can be found [here](https://github.com/Brandonyli/brandonyli.github.io/blob/main/kleinbottle.nom), with accompanying [.ipynb file](https://github.com/Brandonyli/brandonyli.github.io/blob/main/NOME%20File%20Generator%20Example.ipynb).
