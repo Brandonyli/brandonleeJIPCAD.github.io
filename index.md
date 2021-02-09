@@ -13,6 +13,8 @@ Table of Contents
   - [Generator: Sphere](#generator-sphere)
   - [Generator: Mobius Strip](#generator-mobius-strip)
   - [Generator: Hyperboloid](#generator-hyperboloid)
+  - [Generator: General Cartesian Surface](#generator-general-cartesian-surface)
+* [About](#about)
 
 
 ## How does NOME3 work?
@@ -115,14 +117,13 @@ void CMobiusStrip::UpdateEntity()
 }
 ```
 
-![Top of Page](#top)
-
 ## My Contributions to the NOME3 Project
 
 ### Stress Test: Fractal Design
 There are many steps that the NOME3 application goes through in order to generate an image. Upon loading in a file, NOME3 will parse the NOME language files and call the correct generator classes, create and calcualte the position of underlying OpenMesh points and faces, update with user-specified settings, and then draw them into the scene. This is very resource-intensive, and as such NOME3 is prone to crashes.
 
 My first task was to build a stress test model in order to test the capabilities of the rendering packages that NOME3 uses. My design was 3 recursive repetitions of 3-dimensional diamonds made up of triangle instances surrounded by four toruses. This fractal display was built entirely using the NOME proprietary language.
+
 #### The scene
 ![](./media/hw1MainPic.png)
 ![](./media/hw1MainSpin.gif) ![](./media/hw1CloseUpSpinning.gif)
@@ -131,8 +132,6 @@ My first task was to build a stress test model in order to test the capabilities
 ![](./media/hw1FractalPic.png) ![](./media/hw1-fractal-view-2.gif)
 
 The NOM file containing the code can be found [here](https://github.com/Brandonyli/brandonyli.github.io/blob/main/media/hw1.nom).
-
-![Top of Page](#top)
 
 ### Stress Test: Klein Bottle
 A Klein Bottle is a 2-dimensional manifold that has a non-orientable surface in 3-dimensions. The Klein Bottle is interesting because the surface has no boundary (like a sphere), and instead the 'spout' of the bottle wraps into itself and creates a tunnel at the bottom of the 'bottle'. This Klein Bottle was built entirely using the NOME proprietary language, with a Python Notebook script generating the NOME language lines.
@@ -148,10 +147,9 @@ The bottom of the bottle has black-colored faces, which is a pecularity of the O
 
 The NOM file containing the code can be found [here](https://github.com/Brandonyli/brandonyli.github.io/blob/main/media/kleinbottle.nom), with accompanying [.ipynb file](https://github.com/Brandonyli/brandonyli.github.io/blob/main/media/NOME%20File%20Generator%20Example.ipynb).
 
-![Top of Page](#top)
-
 ### Generator: Sphere
 Generators are classes written in C++ mainly utilizing the OpenMesh package, which are called by the NOME proprietary language (by instantiating meshes and instances) in order to draw surfaces into the scene. Generators have various parameters that can be passed into them which control the shape and look of the output surface.
+
 This is my generator for a sphere, which was built in C++. It takes in 5 parameters that control the sphere's number of segments, radius, cut, etc.
 
 #### The Scene
@@ -160,10 +158,9 @@ This is my generator for a sphere, which was built in C++. It takes in 5 paramet
 
 The NOM file containing the C++ generator files and an example NOM file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/sphere).
 
-![Top of Page](#top)
-
 ### Generator: Mobius Strip
 A basic Mobius Strip is a 1-sided surface in 3 dimensions with one boundary curve. It is considered the simplest non-orientable surface. Mobius Strips can have cuts parallel to the boundary curve (which increases the number of boundary curves in a Mobius Strip), and can also have more than one twist.
+
 My generator for a Mobius Strip, built in C++, takes in 4 parameters that control the Mobius Strip's number of segments, radius, number of twists, and number of cuts.
 
 #### The Scene
@@ -174,10 +171,9 @@ The black and orange surfaces are the same 1-sided surface, but the OpenMesh pac
 
 The NOM file containing the C++ generator files and an example NOM file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/mobiusstrip).
 
-![Top of Page](#top)
-
 ### Generator: Hyperboloid
 A hyperboloid is the surface that is generated when you rotate a 2-dimensional hyperbola in 3 dimensions, along a principal axis. It is considered a quadric surface with a center of symmetry, and any cut on the hyperboloid results in a 2-dimensional hyperbola. A hyperboloid can have either 0 sheets, 1 sheet, or two sheets which define whether its shape is one continuous tunnel, a paraboloid, or two paraboloids.
+
 My generator for a Hyperboloid, built in C++, takes in 6 parameters that control the constants in the hyperboloid formula that define its shape, size and number of segments, and the number of sheets.
 
 #### The Scene
@@ -188,4 +184,20 @@ The images in this section are of lower quality because the hyperboloid generato
 
 The NOM file containing the C++ generator files and an example NOM file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/hyperboloid).
 
-![Top of Page](#top)
+### Generator: General Cartesian Surface
+The general cartesian surface generator takes in any function in the form of z(x,y), along with parameters specifying the range and number of segments of x and y. This function can draw any mathematical surface that can be defined as z in terms of x and y. The parametric version of this generator can draw parametric surfaces, and can create easily surfaces like the hyperboloid, mobius strip, etc. that are defined using parametric equations.
+
+This generator was tricky to implement because creating a generator that would take in any mathematical function necessitated changes to the proprietary NOME language. This required understanding ANTLR4, as well as how the language gets lexed and parsed in the NOME3 Project before reaching the generator. The language changes also needed to be stable so that the calling of meshes, groups, instances, and other generators were not affected.
+
+My generator was written in C++, and takes in a function of form z(x,y) along with 4 parameters that define the function's range and number of segments in x and y.
+
+#### The Scene
+![](./media/mainLineMesh.png)
+![](./media/ripple.png) ![](./media/waves.png)
+![](./media/plotSpinning.gif)
+The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/linemesh).
+
+## About
+Brandon Lee is a current 4th-year at UC Berkeley majoring in Data Science and minoring in Computer Science, with an emphasis in Economics.
+
+This GitHub Page records the work that I have done for the NOME3 (Non-Orientable Manifold Editor) Project, which is a Computer-Aided Design tool being developed by a team of researchers under [Professor Carlo Sequin](https://people.eecs.berkeley.edu/~sequin/). To see the main GitHub project, see [here](https://github.com/randyfan/NOME3).
