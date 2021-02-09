@@ -11,6 +11,8 @@ Table of Contents
   - [Stress Test: Fractal Design](#stress-test-fractal-design)
   - [Stress Test: Klein Bottle](#stress-test-klein-bottle)
   - [Generator: Sphere](#generator-sphere)
+  - [Generator: Mobius Strip](#generator-mobius-strip)
+  - [Generator: Hyperboloid](#generator-hyperboloid)
 
 
 ## How does NOME3 work?
@@ -163,3 +165,15 @@ The black and orange surfaces are the same 1-sided surface, but the OpenMesh pac
 ![](./media/mobiusStripParams.gif) ![](./media/fancySpins.gif)
 
 The NOM file containing the C++ generator files and an example NOM file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/mobiusstrip).
+
+### Generator: Hyperboloid
+A hyperboloid is the surface that is generated when you rotate a 2-dimensional hyperbola in 3 dimensions, along a principal axis. It is considered a quadric surface with a center of symmetry, and any cut on the hyperboloid results in a 2-dimensional hyperbola. A hyperboloid can have either 0 sheets, 1 sheet, or two sheets which define whether its shape is one continuous tunnel, a paraboloid, or two paraboloids.
+My generator for a Hyperboloid, built in C++, takes in 6 parameters that control the constants in the hyperboloid formula that define its shape, size and number of segments, and the number of sheets.
+
+#### The Scene
+
+The images in this section are of lower quality because the hyperboloid generator was removed in the latest version of NOME3, so images are taken from an old recording.
+![](./media/hyperboloid.png) ![](./media/2sheets.png)
+![](./media/hyperboloidSheetChange.gif) ![](./media/hyperboloidSize.gif)
+
+The NOM file containing the C++ generator files and an example NOM file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/hyperboloid).
