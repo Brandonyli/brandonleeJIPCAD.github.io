@@ -10,6 +10,7 @@ Table of Contents
 * [My Contributions to the NOME3 Project](#my-contributions-to-the-nome3-project)
   * [Stress Test: Fractal Design](#stress-test-fractal-design)
   * [Stress Test: Klein Bottle](#stress-test-klein-bottle)
+  * [Generator: Sphere](#generator-sphere)
 
 
 ## How does NOME3 work?
