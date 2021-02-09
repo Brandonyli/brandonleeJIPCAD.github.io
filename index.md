@@ -117,32 +117,32 @@ There are many steps that the NOME3 application goes through in order to generat
 
 My first task was to build a stress test model in order to test the capabilities of the rendering packages that NOME3 uses. My design was 3 recursive repetitions of 3-dimensional diamonds made up of triangle instances surrounded by four toruses. This fractal display was built entirely using the NOME proprietary language.
 #### The scene
-![](hw1MainPic.png)
-![](hw1MainSpin.gif) ![](hw1CloseUpSpinning.gif)
+![](./media/hw1MainPic.png)
+![](./media/hw1MainSpin.gif) ![](./media/hw1CloseUpSpinning.gif)
 
 #### Fractal Design
-![](hw1FractalPic.png) ![](hw1-fractal-view-2.gif)
+![](./media/hw1FractalPic.png) ![](./media/hw1-fractal-view-2.gif)
 
-The NOM file containing the code can be found [here](https://github.com/Brandonyli/brandonyli.github.io/blob/main/hw1.nom).
+The NOM file containing the code can be found [here](https://github.com/Brandonyli/brandonyli.github.io/blob/main/media/hw1.nom).
 
 ### Stress Test: Klein Bottle
 A Klein Bottle is a 2-dimensional manifold that has a non-orientable surface in 3-dimensions. The Klein Bottle is interesting because the surface has no boundary (like a sphere), and instead the 'spout' of the bottle wraps into itself and creates a tunnel at the bottom of the 'bottle'. This Klein Bottle was built entirely using the NOME proprietary language, with a Python Notebook script generating the NOME language lines.
 
-#### The scene
+#### The Scene
 ![](main.png) ![](mainAlt.png)
 
-#### The 'spout' and bottom
+#### The Spout and Bottom
 ![](inside.gif)
 
 The bottom of the bottle has black-colored faces, which is a pecularity of the OpenMesh software in NOME3. Fear not, it is one continuous surface.
 ![](bottlebottom.png)
 
-The NOM file containing the code can be found [here](https://github.com/Brandonyli/brandonyli.github.io/blob/main/kleinbottle.nom), with accompanying [.ipynb file](https://github.com/Brandonyli/brandonyli.github.io/blob/main/NOME%20File%20Generator%20Example.ipynb).
+The NOM file containing the code can be found [here](https://github.com/Brandonyli/brandonyli.github.io/blob/main/media/kleinbottle.nom), with accompanying [.ipynb file](https://github.com/Brandonyli/brandonyli.github.io/blob/main/media/NOME%20File%20Generator%20Example.ipynb).
 
 ### Generator: Sphere
 This is my generator for a sphere, which was built in C++. It takes in 5 parameters that control the sphere's number of segments, radius, cut, etc.
 
-#### The scene
+#### The Scene
 ![](sphere.png)
 ![](sphereSegs.gif) ![](sphereSideOpen.gif)
 
