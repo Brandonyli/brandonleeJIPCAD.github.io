@@ -326,7 +326,7 @@ instance seashell "(5/4)*(1-(v/6.28318530718))*cos(2*v)*(1+cos(u))+cos(2*v)|(5/4
 ````
 
 #### Generator C++ Code Guide
-The general Cartesian and Parametric surface generators are different that the fixed shape generators because they take in a mathematical function stored as a std::string and use the package ExprTK to parse and translate the string into an object that generates outputs to the mathematical function.
+The general Cartesian and Parametric surface generators are different that the fixed shape generators because they take in a mathematical function stored as a std::string and use the package [ExprTK](https://github.com/ArashPartow/exprtk) to parse and translate the string into an object that generates outputs to the mathematical function.
 
 We begin by binding the arguments that are passed into our CLineMeshParametric class object. These parameters specify the range and number of segments (along the range) of the non-fixed variables u and v. The UpdateEntity() method is the main method that generates our surface. The code following this code block are all within our main UpdateEntity() method.
 ````cpp
@@ -373,7 +373,7 @@ std::string funcY = tokens[1];
 std::string funcZ = tokens[2];
 ````
 
-This code block contains our calls to ExprTK methods. ExprTK allows us to pass in our 3 strings and get 'mathematical function' objects in return. The symbol table registerd our non-fixed symbols u and v, and allows us to change their values on the fly. The expression_t objects are the objects we call in order to calculate our function at a given u and v. The parser parses the strings into their respective expression objects.
+This code block contains our calls to [ExprTK](https://github.com/ArashPartow/exprtk) methods. ExprTK allows us to pass in our 3 strings and get 'mathematical function' objects in return. The symbol table registerd our non-fixed symbols u and v, and allows us to change their values on the fly. The expression_t objects are the objects we call in order to calculate our function at a given u and v. The parser parses the strings into their respective expression objects.
 ````cpp
 typedef exprtk::symbol_table<double> symbol_table_t;
 typedef exprtk::expression<double>     expression_t;
@@ -408,7 +408,7 @@ This final block contains two loops, one to define vertex points for our surface
 
 Once vertices and faces are created, they are passed into our rendering engine to be displayed on the GUI.
 ````cpp
-// set bounds
+// set increment size
 double uIncrement = (uEnd - uStart) / uSegs;
 double vIncrement = (vEnd - vStart) / vSegs;
 
@@ -451,7 +451,7 @@ for (int ui = 0; ui + 1 < uCounter; ui++) {
 The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/linemeshparametric).
 
 ## About
-![](./media/headshot.png){:height="50%" width="50%"}
+![](./media/headshot.png){:height="40%" width="40%"}
 
 Brandon Lee is a current 4th-year at UC Berkeley majoring in Data Science and minoring in Computer Science, with an emphasis in Economics. He has taken courses in Linear Algebra, Multivariable Calculus, Discrete Math, Probability Theory, Data Structures, Low-Level Programming, Database Systems, Algorithms, Cybersecurity, Machine Learning, Natural Language Processing, and Data Science Techniques. Previous projects include RISC-V CPU design, NP-Hard Minimum Weighted Connected Dominating Set algorithm design, Database System design, and Neural Net design. He has been a member of the NOME3 Research Team since Fall 2020, and has worked on generator creation, stress testing, code documentation, and compilation issue resolutions.
 
