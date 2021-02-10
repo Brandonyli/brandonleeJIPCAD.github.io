@@ -1,6 +1,3 @@
-"Hello Cube"
-![](./media/hellocube.png)
-
 ## A Dive into NOME3: The Non-Orientable Manifold Editor
 
 NOME3 (Non-Orientable Manifold Editor) is an emerging new Computer-Aided-Design tool being developed by [Professor Carlo Sequin](https://people.eecs.berkeley.edu/~sequin/) and a team of undergraduate and graduate researchers at the University of California, Berkeley. It is specifically built to assist in the design of smooth but precise free-form geometries, such as those by artists like [Eva Hild](https://www.evahild.com/ceramics) or [Charles O. Perry](http://www.charlesperry.com/).
@@ -19,6 +16,8 @@ Table of Contents
   - [Generator: General Cartesian Surface](#generator-general-cartesian-surface)
 * [About](#about)
 
+#### "Hello Cube"
+![](./media/hellocube.png)
 
 ## How does NOME3 work?
 
