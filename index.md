@@ -311,7 +311,7 @@ This (2-3) Torus Knot is generated using only 1 parameter t, rather than two par
 This seashell looks black because the points are being generated and connected into faces in a clockwise manner, while OpenMesh expects faces to be created in a counter-clockwise manner.
 ![](./media/seashell.gif)
 
-Setting x'(u,v)=-x(u,v), y'(u,v)=-y(u,v), z'(u,v)=-z(u,v) gives us the correct clockwise face declaration.
+Setting x'(u,v)=-x(u,v), y'(u,v)=-y(u,v), z'(u,v)=-z(u,v) gives us the correct counter-clockwise face declaration.
 ![](./media/seashellorange.gif)
 
 The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/linemeshparametric).
