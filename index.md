@@ -240,10 +240,8 @@ My generator was written in C++, and takes in a function of form z(x,y) along wi
 linemesh "(7*x*y)/exp((x^2)+(y^2))" (-2 2 -2 2 40 40) endlinemesh
 instance example1 "[7*x*y]/exp[[x^2]+[y^2]]" endinstance
 
-
 linemesh "((y^2)/1.5)-((x^2)/2)" (-3 3 -3 3 40 40) endlinemesh
 instance example2 "((y^2)/1.5)-((x^2)/2)" translate (12 0 0) endinstance
-
 
 linemesh "sin(10(x^2+y^2))/10" (-3 3 -3 3 300 300) endlinemesh
 instance example3 "sin(10(x^2+y^2))/10" translate (-12 0 0) endinstance
@@ -253,7 +251,7 @@ instance example4 "sin(5x)*cos(5y)/5" translate (0 -12 0) endinstance
 ````
 
 #### ANTLR4 Definitions
-Adding the capability to accept functions of any general form required me to change language definitions in the ANTLR4 file. The code block below is a section of the ANTLR4 file that deals with lexing for the general function generator.
+Adding the capability to accept functions of any general form required me to change language definitions in the ANTLR4 file. The code block below is a relevant sub-section of the ANTLR4 file that deals with lexing for the general function generator.
 ````
 grammar Nom;
 
@@ -270,7 +268,6 @@ expression
    
 ident
    : IDENT
-   | '$' IDENT
    ;
    
 IDENT : VALID_ID_START VALID_ID_CHAR* | QUOTE VALID_ID_FUNC* QUOTE ;
@@ -282,7 +279,6 @@ fragment QUOTE : '"' ;
 command
    : open='linemesh' name=ident LPAREN expression expression expression expression expression expression RPAREN end='endlinemesh' # CmdExprListOne
    ;
-   
 ````
 
 The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/linemesh).
