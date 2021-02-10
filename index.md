@@ -17,6 +17,7 @@ Table of Contents
   * [Generator: Mobius Strip](#generator-mobius-strip)
   * [Generator: Hyperboloid](#generator-hyperboloid)
   * [Generator: General Cartesian Surface](#generator-general-cartesian-surface)
+  * [Generator: General Parametric Surface](#generator-general-parametric-surface)
 * [About](#about)
 
 ## How does NOME3 work?
@@ -282,6 +283,46 @@ command
 ````
 
 The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/linemesh).
+
+### Generator: General Parametric Surface
+The general parametric surface generator takes in 3 functions in the form of x(u,v), y(u,v), and z(u,v), along with parameters specifying the range and number of segments of u and v. This function can draw any mathematical surface that can be defined as 3 parametric equations.
+
+The functions are passed in as the mesh's 'name', similar to the general cartesian surface generator. One difference is that since parametric surfaces have 3 equations, they are passed in as x(u,v)|y(u,v)|z(u,v), surrounded by quotes.
+
+There are 4 parameters that define the function's range and number of segments in u and v.
+
+#### The Scene
+
+A 'lumpy sphere'.
+![](./media/lumpysphere.gif)
+One sphere is generated using the sphere generator, the other using the parametric surface generator. Can you tell which is which?
+![](./media/2spheres.png)
+
+Here are two dupins with different constants defined in their equations.
+![](./media/duodupins.png)
+
+This (2-3) Torus Knot is generated using only 1 parameter t, rather than two parameters u,v.
+![](./media/23torusknot.png)
+
+This seashell looks black because the points are being generated and connected into faces in a clockwise manner, while OpenMesh expects faces to be created in a counter-clockwise manner.
+![](./media/seashell.gif)
+
+The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/linemeshparametric).
+
+#### NOM Code Example
+````
+linemeshparametric "(0.5*(0.4-1*cos(u)*cos(v))+0.96*cos(u))/(1-0.4*cos(u)*cos(v))|(0.98*sin(u)*(1-0.5*cos(v)))/(1-0.4*cos(u)*cos(v))|(0.98*sin(v)*(0.4*cos(u)-0.5))/(1-0.48*cos(u)*cos(v))" (0 6.28318 0 6.28318 60 60) endlinemeshparametric
+instance dupin1 "(0.5*(0.4-1*cos(u)*cos(v))+0.96*cos(u))/(1-0.4*cos(u)*cos(v))|(0.98*sin(u)*(1-0.5*cos(v)))/(1-0.4*cos(u)*cos(v))|(0.98*sin(v)*(0.4*cos(u)-0.5))/(1-0.48*cos(u)*cos(v))" translate (6 0 0) endinstance
+
+linemeshparametric "(sin(5*u)*cos(5*v)+4)*(cos(u)*sin(v)/4)|(sin(5*u)*cos(5*v)+4)*(sin(u)*sin(v))/4|(sin(5*u)*cos(5*v)+4)*(cos(v)/4)" (-3.14159 3.14159 -3.14159 0 100 100) endlinemeshparametric
+instance lumpysphere "(sin(5*u)*cos(5*v)+4)*(cos(u)*sin(v)/4)|(sin(5*u)*cos(5*v)+4)*(sin(u)*sin(v))/4|(sin(5*u)*cos(5*v)+4)*(cos(v)/4)" translate (-6 0 0) endinstance
+
+linemeshparametric "sin(v)*(2+cos(3*u))*cos(2*u)|sin(v)*(2+cos(3*u))*sin(2*u)|sin(v)*cos(v)*(sin(3*u))" (0 6.28318 0 1.0472 60 20) endlinemeshparametric
+instance tknot23 "sin(v)*(2+cos(3*u))*cos(2*u)|sin(v)*(2+cos(3*u))*sin(2*u)|sin(v)*cos(v)*(sin(3*u))" translate (0 -6 0) endinstance
+
+linemeshparametric "(5/4)*(1-(v/6.28318530718))*cos(2*v)*(1+cos(u))+cos(2*v)|(5/4)*(1-(v/6.28318530718))*sin(2*v)*(1+cos(u))+sin(2*v)|((10*v)/6.28318530718)+(5/4)*(1-(v/6.28318530718))*sin(u)+15" (0 6.28318 -6.28318 6.28318 50 50) endlinemeshparametric
+instance seashell "(5/4)*(1-(v/6.28318530718))*cos(2*v)*(1+cos(u))+cos(2*v)|(5/4)*(1-(v/6.28318530718))*sin(2*v)*(1+cos(u))+sin(2*v)|((10*v)/6.28318530718)+(5/4)*(1-(v/6.28318530718))*sin(u)+15" endinstance
+````
 
 ## About
 Brandon Lee is a current 4th-year at UC Berkeley majoring in Data Science and minoring in Computer Science, with an emphasis in Economics. He has taken courses in Linear Algebra, Multivariable Calculus, Discrete Math, Probability Theory, Data Structures, Low-Level Programming, Database Systems, Algorithms, Cybersecurity, Machine Learning, Natural Language Processing, and Data Science Techniques. Previous projects include RISC-V CPU design, NP-Hard Minimum Weighted Connected Dominating Set algorithm design, Database System design, and Neural Net design. He has been a member of the NOME3 Research Team since Fall 2020, and has worked on generator creation, stress testing, code documentation, and compilation issue resolutions.
