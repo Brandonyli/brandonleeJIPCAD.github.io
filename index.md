@@ -4,9 +4,6 @@ NOME3 (Non-Orientable Manifold Editor) is an emerging new Computer-Aided-Design 
 
 The project is built using C++ as the backend, with a proprietary [NOME language](https://github.com/randyfan/NOME3/wiki/NOME3-Language-Reference) used as the medium in which users can build their creations. The main up-to-date GitHub repository for the NOME3 Project, along with compilation and usage instructions, can be found [here](https://github.com/randyfan/NOME3).
 
-### "Hello Cube"
-![](./media/hellocube.png)
-
 Table of Contents
 =================
 * [How does NOME3 work?](#how-does-nome3-work)
