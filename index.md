@@ -35,6 +35,10 @@ An instance of either a mesh or a group is created in order to actually bring an
 
 Further operations such as point selection, face deletion, line sweeps, subdivision, screen panning and rotation, etc.) can then be performed once the scene is loaded.
 
+The project must be compiled using CMake, with compilation instructions found [here](https://github.com/randyfan/NOME3/blob/master/README.md). To use the compiled application, open the program and load in a .NOM file. The scene in the .NOM file will be rendered into the crystal-ball interface, which can then be interacted with.
+
+Generators and more-complex shapes (ex. sweeps, combinations of generators, etc.) must be defined and instantiated on the .NOM file prior to rendering in the application, but once a scene is rendered then faces/vertices can be deleted, objects can be subdivided, the time variable can be used to pan the screen, etc.
+
 ### NOME Language Example
 An example of the interplay between meshes, groups, and instances can be seen here:
 ```markdown
@@ -222,6 +226,8 @@ The general cartesian surface generator takes in any function in the form of z(x
 
 This generator was tricky to implement because creating a generator that would take in any mathematical function necessitated changes to the proprietary NOME language. This required understanding ANTLR4, as well as how the language gets lexed and parsed in the NOME3 Project before reaching the generator. The language changes also needed to be stable so that the calling of meshes, groups, instances, and other generators were not affected.
 
+Functions are passed into this generator by "naming" the object as the function itself in the NOM file. This quirk allows the ANTLR parser to pass in the raw function as a STD::String to the General Cartesian Surface C++ class, which then parses it into a mathematical formula, before outputting the corresponding points and faces. Current implementation requires the parentheses in the function to be changed to brackets, in order to not interfere with the lexer definitions for parentheses. This is subject to change. Functions must also be placed with quotations, see end of section for code examples.
+
 My generator was written in C++, and takes in a function of form z(x,y) along with 4 parameters that define the function's range and number of segments in x and y.
 
 #### The Scene
@@ -249,6 +255,8 @@ instance example4 "sin[5x]*cos[5y]/5" translate (0 -12 0) endinstance
 The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/linemesh).
 
 ## About
-Brandon Lee is a current 4th-year at UC Berkeley majoring in Data Science and minoring in Computer Science, with an emphasis in Economics.
+Brandon Lee is a current 4th-year at UC Berkeley majoring in Data Science and minoring in Computer Science, with an emphasis in Economics. He has taken courses in Linear Algebra, Multivariable Calculus, Discrete Math, Probability Theory, Data Structures, Low-Level Programming, Database Systems, Algorithms, Cybersecurity, Machine Learning, Natural Language Processing, and Data Science Techniques. Previous projects include RISC-V CPU design, NP-Hard Minimum Weighted Connected Dominating Set algorithm design, Database System design, and Neural Net design. He has been a member of the NOME3 Research Team since Fall 2020, and has worked on generator creation, stress testing, code documentation, and compilation issue resolutions.
 
-This GitHub Page records the work that I have done for the NOME3 (Non-Orientable Manifold Editor) Project, which is a Computer-Aided Design tool being developed by a team of researchers under [Professor Carlo Sequin](https://people.eecs.berkeley.edu/~sequin/). To see the main GitHub project, see [here](https://github.com/randyfan/NOME3).
+This GitHub Page records the work that I, Brandon Lee, have done for the NOME3 (Non-Orientable Manifold Editor) Project, which is a Computer-Aided Design tool being developed by a team of researchers under [Professor Carlo Sequin](https://people.eecs.berkeley.edu/~sequin/).
+
+To see the main GitHub project, see [here](https://github.com/randyfan/NOME3).
