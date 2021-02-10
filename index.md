@@ -287,7 +287,7 @@ The NOM file containing the C++ generator files, an example NOM file, and the ed
 ### Generator: General Parametric Surface
 The general parametric surface generator takes in 3 functions in the form of x(u,v), y(u,v), and z(u,v), along with parameters specifying the range and number of segments of u and v. This function can draw any mathematical surface that can be defined as 3 parametric equations.
 
-Our three functions are passed in as the mesh's 'name', similar to the general cartesian surface generator. One difference is that since parametric surfaces have 3 equations, they are passed in as x(u,v)|y(u,v)|z(u,v), surrounded by quotes.
+Our three functions are passed in as the mesh's 'name', similar to the general cartesian surface generator. One difference is that since parametric surfaces have 3 equations, they are passed in as x(u,v), y(u,v), and z(u,v), separated by a bar delimiter and surrounded by quotes.
 
 There are 4 parameters that define the function's range and number of segments in u and v.
 
