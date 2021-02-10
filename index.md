@@ -226,7 +226,7 @@ The general cartesian surface generator takes in any function in the form of z(x
 
 This generator was tricky to implement because creating a generator that would take in any mathematical function necessitated changes to the proprietary NOME language. This required understanding ANTLR4, as well as how the language gets lexed and parsed in the NOME3 Project before reaching the generator. The language changes also needed to be stable so that the calling of meshes, groups, instances, and other generators were not affected.
 
-Functions are passed into this generator by "naming" the object as the function itself in the NOM file. This quirk allows the ANTLR parser to pass in the raw function as a STD::String to the General Cartesian Surface C++ class, which then parses it into a mathematical formula, before outputting the corresponding points and faces. Current implementation requires the parentheses in the function to be changed to brackets, in order to not interfere with the lexer definitions for parentheses. This is subject to change. Functions must also be placed with quotations, see end of section for code examples.
+Functions are passed into this generator by "naming" the object as the function itself in the NOM file. This quirk allows the ANTLR parser to pass in the raw function as a STD::String to the General Cartesian Surface C++ class, which then parses it into a mathematical formula, before outputting the corresponding points and faces. Functions must also be placed with quotations, see end of section for code examples.
 
 My generator was written in C++, and takes in a function of form z(x,y) along with 4 parameters that define the function's range and number of segments in x and y.
 
@@ -236,20 +236,53 @@ My generator was written in C++, and takes in a function of form z(x,y) along wi
 ![](./media/plotSpinning.gif)
 
 #### NOM Code Example
-````markdown
-linemesh "[7*x*y]/exp[[x^2]+[y^2]]" (-2 2 -2 2 40 40) endlinemesh
+````
+linemesh "(7*x*y)/exp((x^2)+(y^2))" (-2 2 -2 2 40 40) endlinemesh
 instance example1 "[7*x*y]/exp[[x^2]+[y^2]]" endinstance
 
 
-linemesh "[[y^2]/1.5]-[[x^2]/2]" (-3 3 -3 3 40 40) endlinemesh
-instance example2 "[[y^2]/1.5]-[[x^2]/2]" translate (12 0 0) endinstance
+linemesh "((y^2)/1.5)-((x^2)/2)" (-3 3 -3 3 40 40) endlinemesh
+instance example2 "((y^2)/1.5)-((x^2)/2)" translate (12 0 0) endinstance
 
 
-linemesh "sin[10[x^2+y^2]]/10" (-3 3 -3 3 300 300) endlinemesh
-instance example3 "sin[10[x^2+y^2]]/10" translate (-12 0 0) endinstance
+linemesh "sin(10(x^2+y^2))/10" (-3 3 -3 3 300 300) endlinemesh
+instance example3 "sin(10(x^2+y^2))/10" translate (-12 0 0) endinstance
 
-linemesh "sin[5x]*cos[5y]/5" (-3 3 -3 3 300 300) endlinemesh
-instance example4 "sin[5x]*cos[5y]/5" translate (0 -12 0) endinstance
+linemesh "sin(5x)*cos(5y)/5" (-3 3 -3 3 300 300) endlinemesh
+instance example4 "sin(5x)*cos(5y)/5" translate (0 -12 0) endinstance
+````
+
+#### ANTLR4 Definitions
+Adding the capability to accept functions of any general form required me to change language definitions in the ANTLR4 file. The code block below is a section of the ANTLR4 file that deals with lexing for the general function generator.
+````
+grammar Nom;
+
+expression
+   :  ident LPAREN expression RPAREN # Call
+   |  op= (PLUS | MINUS) expression # UnaryOp
+   |  expression op=POW expression # BinOp
+   |  expression op=(TIMES | DIV)  expression # BinOp
+   |  expression op=(PLUS | MINUS) expression # BinOp
+   |  LPAREN expression RPAREN # SubExpParen
+   |  beg='{' sec='expr' expression end='}' # SubExpCurly
+   |  atom # AtomExpr
+   ;
+   
+ident
+   : IDENT
+   | '$' IDENT
+   ;
+   
+IDENT : VALID_ID_START VALID_ID_CHAR* | QUOTE VALID_ID_FUNC* QUOTE ;
+fragment VALID_ID_START : ('a' .. 'z') | ('A' .. 'Z') | '_' | '.' ;
+fragment VALID_ID_CHAR : VALID_ID_START | ('0' .. '9') ;
+fragment VALID_ID_FUNC : VALID_ID_CHAR | '(' | ')' | '*' | '/' | '+' | '!' | '%' | '=' | '^' | '-' ;
+fragment QUOTE : '"' ;
+
+command
+   : open='linemesh' name=ident LPAREN expression expression expression expression expression expression RPAREN end='endlinemesh' # CmdExprListOne
+   ;
+   
 ````
 
 The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/linemesh).
