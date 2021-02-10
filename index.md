@@ -293,7 +293,7 @@ There are 4 parameters that define the function's range and number of segments i
 
 #### The Scene
 
-A 'lumpy sphere'.
+A 'lumpy sphere' surface, the equations are similar to a sphere with a few extra sinusoidal functions and constants.
 ![](./media/lumpysphere.gif)
 
 One sphere is generated using the sphere generator, the other using the parametric surface generator. Can you tell which is which?
