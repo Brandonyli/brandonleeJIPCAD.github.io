@@ -152,7 +152,6 @@ The bottom of the bottle has black-colored faces, which is a pecularity of the O
 #### NOM Code Example
 This code was generated using a [Python Notebook](https://github.com/Brandonyli/brandonyli.github.io/blob/main/media/NOME%20File%20Generator%20Example.ipynb) and exported to a NOM file.
 ````markdown
-  
 mesh m
 point pt_0_0 (4.0 -0.0 0.0) endpoint
 point pt_0_1 (3.95075 -0.0 0.62574) endpoint
@@ -224,7 +223,7 @@ The general cartesian surface generator takes in any function in the form of z(x
 
 This generator was tricky to implement because creating a generator that would take in any mathematical function necessitated changes to the proprietary NOME language. This required understanding ANTLR4, as well as how the language gets lexed and parsed in the NOME3 Project before reaching the generator. The language changes also needed to be stable so that the calling of meshes, groups, instances, and other generators were not affected.
 
-Functions are passed into this generator by "naming" the object as the function itself in the NOM file. This quirk allows the ANTLR parser to pass in the raw function as a STD::String to the General Cartesian Surface C++ class, which then parses it into a mathematical formula, before outputting the corresponding points and faces. Functions must also be placed with quotations, see end of section for code examples.
+Functions are passed into this generator by "naming" the object as the function itself in the NOM file. This quirk allows the ANTLR parser to pass in the raw function as a std::String to the General Cartesian Surface C++ class, which then parses it into a mathematical formula, before outputting the corresponding points and faces. Functions must also be placed with quotations, see end of section for code examples.
 
 My generator was written in C++, and takes in a function of form z(x,y) along with 4 parameters that define the function's range and number of segments in x and y.
 
@@ -311,8 +310,6 @@ This seashell looks black because the points are being generated and connected i
 Setting x'(u,v)=-x(u,v), y'(u,v)=-y(u,v), z'(u,v)=-z(u,v) gives us the correct counter-clockwise face declaration.
 ![](./media/seashellorange.gif)
 
-The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/linemeshparametric).
-
 #### NOM Code Example
 ````
 linemeshparametric "(0.5*(0.4-1*cos(u)*cos(v))+0.96*cos(u))/(1-0.4*cos(u)*cos(v))|(0.98*sin(u)*(1-0.5*cos(v)))/(1-0.4*cos(u)*cos(v))|(0.98*sin(v)*(0.4*cos(u)-0.5))/(1-0.48*cos(u)*cos(v))" (0 6.28318 0 6.28318 60 60) endlinemeshparametric
@@ -327,6 +324,131 @@ instance tknot23 "sin(v)*(2+cos(3*u))*cos(2*u)|sin(v)*(2+cos(3*u))*sin(2*u)|sin(
 linemeshparametric "(5/4)*(1-(v/6.28318530718))*cos(2*v)*(1+cos(u))+cos(2*v)|(5/4)*(1-(v/6.28318530718))*sin(2*v)*(1+cos(u))+sin(2*v)|((10*v)/6.28318530718)+(5/4)*(1-(v/6.28318530718))*sin(u)+15" (0 6.28318 -6.28318 6.28318 50 50) endlinemeshparametric
 instance seashell "(5/4)*(1-(v/6.28318530718))*cos(2*v)*(1+cos(u))+cos(2*v)|(5/4)*(1-(v/6.28318530718))*sin(2*v)*(1+cos(u))+sin(2*v)|((10*v)/6.28318530718)+(5/4)*(1-(v/6.28318530718))*sin(u)+15" endinstance
 ````
+
+#### Generator C++ Code Guide
+The general Cartesian and Parametric surface generators are different that the fixed shape generators because they take in a mathematical function stored as a std::string and use the package ExprTK to parse and translate the string into an object that generates outputs to the mathematical function.
+
+We begin by binding the arguments that are passed into our CLineMeshParametric class object. These parameters specify the range and number of segments (along the range) of the non-fixed variables u and v. The UpdateEntity() method is the main method that generates our surface. The code following this code block are all within our main UpdateEntity() method.
+````cpp
+DEFINE_META_OBJECT(CLineMeshParametric)
+{
+    BindPositionalArgument(&CLineMeshParametric::u_start, 1, 0);
+    BindPositionalArgument(&CLineMeshParametric::u_end, 1, 1);
+    BindPositionalArgument(&CLineMeshParametric::v_start, 1, 2);
+    BindPositionalArgument(&CLineMeshParametric::v_end, 1, 3);
+    BindPositionalArgument(&CLineMeshParametric::u_segs, 1, 4);
+    BindPositionalArgument(&CLineMeshParametric::v_segs, 1, 5);
+}
+
+void CLineMeshParametric::UpdateEntity()
+{
+...
+}
+````
+
+We must define our arguments as variables in order to use them.
+````cpp
+double uStart = (double)u_start.GetValue(0.0f);
+double uEnd = (double)u_end.GetValue(0.0f);
+double vStart = (double)v_start.GetValue(0.0f);
+double vEnd = (double)v_end.GetValue(0.0f);
+double uSegs = (double)u_segs.GetValue(0.0f);
+double vSegs = (double)v_segs.GetValue(0.0f);
+````
+
+In this code block we clean our input string 'funcConcat' and split it into 3 strings, funcX for our X-dimension, funcY for our Y-dimension, and funcZ for our Z-dimension.
+````cpp
+std::string funcConcat = this->GetName(); // ex. funcConcat := x(u,v)|y(u,v)|z(u,v) = "cos(u)*sin(v)|sin(u)*sin(v)|cos(v)"
+funcConcat.erase(std::remove(funcConcat.begin(), funcConcat.end(), '"'), funcConcat.end());
+size_t numFuncsInString = std::count(funcConcat.begin(), funcConcat.end(), '|');
+
+std::vector<std::string> tokens;
+std::string token;
+std::istringstream tokenStream(funcConcat);
+while (std::getline(tokenStream, token, '|')) {
+tokens.push_back(token);
+}
+std::string funcX = tokens[0];
+std::string funcY = tokens[1];
+std::string funcZ = tokens[2];
+````
+
+This code block contains our calls to ExprTK methods. ExprTK allows us to pass in our 3 strings and get 'mathematical function' objects in return. The symbol table registerd our non-fixed symbols u and v, and allows us to change their values on the fly. The expression_t objects are the objects we call in order to calculate our function at a given u and v. The parser parses the strings into their respective expression objects.
+````cpp
+typedef exprtk::symbol_table<double> symbol_table_t;
+typedef exprtk::expression<double>     expression_t;
+typedef exprtk::parser<double>             parser_t;
+
+double u = 0.0;
+double v = 0.0;
+
+// Register symbols with the symbol_table
+symbol_table_t symbol_table;
+symbol_table.add_variable("u",u);
+symbol_table.add_variable("v",v);
+
+// Instantiate expressions and register symbol_table
+expression_t expression_x;
+expression_x.register_symbol_table(symbol_table);
+expression_t expression_y;
+expression_y.register_symbol_table(symbol_table);
+expression_t expression_z;
+expression_z.register_symbol_table(symbol_table);
+
+// Instantiate parsers and compile the expression
+parser_t parser_x;
+parser_x.compile(funcX,expression_x);
+parser_t parser_y;
+parser_y.compile(funcY,expression_y);
+parser_t parser_z;
+parser_z.compile(funcZ,expression_z);
+````
+
+This final block contains two loops, one to define vertex points for our surface and one to define faces from those vertex points. The smoothness (i.e. number of vertex points and faces generated) is dependent on the segment arguments we passed into the method. We can evaluate our math expression object (expression_x, expression_y, expression_z) at a given point (u,v) by setting 'u = ui' and 'v = vi', before calling the value() method attribute on our expression objects.
+
+Once vertices and faces are created, they are passed into our rendering engine to be displayed on the GUI.
+````cpp
+// set bounds
+double uIncrement = (uEnd - uStart) / uSegs;
+double vIncrement = (vEnd - vStart) / vSegs;
+
+// add points to vector
+double xi = 0.0;
+double yi = 0.0;
+double zi = 0.0;
+int uCounter = 0;
+int vCounter = 0;
+for (double ui = uStart; ui <= uEnd + (uIncrement/5); ui += uIncrement) { // dividing by 5 for rounding error
+u = ui;
+vCounter = 0;
+	for (double vi = vStart; vi <= vEnd + (vIncrement/5); vi += vIncrement) { // dividing by 5 for rounding error
+	    v = vi;
+	    xi = expression_x.value();
+	    yi = expression_y.value();
+	    zi = expression_z.value();
+	    AddVertex("v_" + std::to_string(uCounter) + "_" + std::to_string(vCounter), // name ex. "v_0_5"
+		      { (float)xi, (float)yi, (float)zi } );
+	    vCounter++;
+	}
+uCounter++;
+}
+
+// add faces
+int faceCounter = 0;
+for (int ui = 0; ui + 1 < uCounter; ui++) {
+	for (int vi = 0; vi < vCounter - 1; vi++) {
+	    std::vector<std::string> face;
+	    face.push_back("v_" + std::to_string(ui) + "_" + std::to_string(vi));
+	    face.push_back("v_" + std::to_string(ui+1) + "_" + std::to_string(vi));
+	    face.push_back("v_" + std::to_string(ui+1) + "_" + std::to_string(vi+1));
+	    face.push_back("v_" + std::to_string(ui) + "_" + std::to_string(vi+1));
+
+	    AddFace("f1_" + std::to_string(faceCounter++), face);
+	}
+}
+````
+
+The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/linemeshparametric).
 
 ## About
 Brandon Lee is a current 4th-year at UC Berkeley majoring in Data Science and minoring in Computer Science, with an emphasis in Economics. He has taken courses in Linear Algebra, Multivariable Calculus, Discrete Math, Probability Theory, Data Structures, Low-Level Programming, Database Systems, Algorithms, Cybersecurity, Machine Learning, Natural Language Processing, and Data Science Techniques. Previous projects include RISC-V CPU design, NP-Hard Minimum Weighted Connected Dominating Set algorithm design, Database System design, and Neural Net design. He has been a member of the NOME3 Research Team since Fall 2020, and has worked on generator creation, stress testing, code documentation, and compilation issue resolutions.
