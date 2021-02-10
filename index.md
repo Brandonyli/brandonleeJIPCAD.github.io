@@ -233,7 +233,10 @@ My generator was written in C++, and takes in a function of form z(x,y) along wi
 
 #### The Scene
 ![](./media/mainLineMesh.png)
-![](./media/ripple.png) ![](./media/waves.png)
+
+To decrease the jaggedness we could increase the number of segments defined for this surface.
+![](./media/ripple.png)
+![](./media/waves.png)
 ![](./media/plotSpinning.gif)
 
 #### NOM Code Example
