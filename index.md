@@ -215,10 +215,10 @@ A hyperboloid is the surface that is generated when you rotate a 2-dimensional h
 My generator for a Hyperboloid, built in C++, takes in 6 parameters that control the constants in the hyperboloid formula that define its shape, size and number of segments, and the number of sheets.
 
 #### The Scene
-
-The images in this section are of lower quality because the hyperboloid generator was removed in the latest version of NOME3, so images are taken from an old recording.
-![](./media/hyperboloid.png) ![](./media/2sheets.png)
-![](./media/hyperboloidSheetChange.gif) ![](./media/hyperboloidSize.gif)
+The generator supports hyperboloid of 1 sheet and 2 sheets.
+![](./media/mainhyperboloid.png)
+![](./media/1sheethyperboloid.png)
+![](./media/2sheethyperboloid.png)
 
 The NOM file containing the C++ generator files and an example NOM file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/hyperboloid).
 
@@ -310,6 +310,9 @@ This (2-3) Torus Knot is generated using only 1 parameter t, rather than two par
 
 This seashell looks black because the points are being generated and connected into faces in a clockwise manner, while OpenMesh expects faces to be created in a counter-clockwise manner.
 ![](./media/seashell.gif)
+
+Setting x'(u,v)=-x(u,v), y'(u,v)=-y(u,v), z'(u,v)=-z(u,v) gives us the correct clockwise face declaration.
+![](./media/seashellorange.gif)
 
 The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/linemeshparametric).
 
