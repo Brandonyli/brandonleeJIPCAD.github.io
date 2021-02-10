@@ -299,10 +299,10 @@ One sphere is generated using the sphere generator, the other using the parametr
 ![](./media/2spheres.png)
 
 Here are two dupins with different constants defined in their equations.
-![](./media/duodupins.png)
+![](./media/duoDupins.png)
 
 This (2-3) Torus Knot is generated using only 1 parameter t, rather than two parameters u,v.
-![](./media/23torusknot.png)
+![](./media/23torusknot.gif)
 
 This seashell looks black because the points are being generated and connected into faces in a clockwise manner, while OpenMesh expects faces to be created in a counter-clockwise manner.
 ![](./media/seashell.gif)
