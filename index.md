@@ -129,7 +129,6 @@ There are many steps that the NOME3 application goes through in order to generat
 My first task was to build a stress test model in order to test the capabilities of the rendering packages that NOME3 uses. My design was 3 recursive repetitions of 3-dimensional diamonds made up of triangle instances surrounded by four toruses. This fractal display was built entirely using the NOME proprietary language.
 
 #### The scene
-![](./media/hw1MainPic.png)
 ![](./media/hw1MainSpin.gif) ![](./media/hw1CloseUpSpinning.gif)
 
 #### Fractal Design
