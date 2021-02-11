@@ -132,6 +132,7 @@ My first task was to build a stress test model in order to test the capabilities
 ![](./media/hw1MainSpin.gif) ![](./media/hw1CloseUpSpinning.gif)
 
 #### Fractal Design
+The alternate viewing angle and zoom-in makes the recursive design of the 'fractal' shape more obvious. It becomes easier to notice that the fractal is 3 levels deep, with the smallest fractal missing the 2 tori surrounding the diamonds (due to performance frames-per-second reasons).
 ![](./media/hw1FractalPic.png) ![](./media/hw1-fractal-view-2.gif)
 
 The NOM file containing the code can be found [here](https://github.com/Brandonyli/brandonyli.github.io/blob/main/media/hw1.nom).
