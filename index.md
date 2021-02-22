@@ -200,8 +200,8 @@ My generator for a Mobius Strip, built in C++, takes in 4 parameters that contro
 #### The Scene
 
 The black and orange surfaces are the same 1-sided surface, but the OpenMesh package always defines both a front (orange) and back (black) side to a surface. In this case, since the front and back are the same surface they end up touching and looking like that.
-![](./media/normalSpin.gif) ![](./media/2cutMob.png)
-![](./media/mobiusStripParams.gif) ![](./media/fancySpins.gif)
+![](./media/mobstrip.gif) ![](./media/bigmobstrip.gif)
+![](./media/mobiusstriptwists.gif) ![](./media/mobstripcuts.gif)
 
 The NOM file containing the C++ generator files and an example NOM file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/mobiusstrip).
 
