@@ -193,7 +193,7 @@ This is my generator for a sphere, which was built in C++. It takes in 5 paramet
 The NOM file containing the C++ generator files and an example NOM file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/sphere).
 
 ### Generator: Mobius Strip
-A basic Mobius Strip is a 1-sided surface in 3 dimensions with one boundary curve. It is considered the simplest non-orientable surface. Mobius Strips can have cuts parallel to the boundary curve (which increases the number of boundary curves in a Mobius Strip), and can also have more than one twist.
+A basic Mobius Strip is a 1-sided surface in 3 dimensions with one boundary curve. It is considered the simplest non-orientable surface. Mobius Strips can have cuts parallel to the boundary curve (which increases the number of boundary curves in a Mobius Strip), and can also have more than one twist. The thickness of the mobius strip is proportional to the radius.
 
 My generator for a Mobius Strip, built in C++, takes in 4 parameters that control the Mobius Strip's number of segments, radius, number of twists, and number of cuts.
 
@@ -237,16 +237,16 @@ To decrease the jaggedness we could increase the number of segments defined for 
 
 #### NOM Code Example
 ````
-linemesh "(7*x*y)/exp((x^2)+(y^2))" (-2 2 -2 2 40 40) endlinemesh
-instance example1 "[7*x*y]/exp[[x^2]+[y^2]]" endinstance
+gencartesiansurf "(7*x*y)/exp((x^2)+(y^2))" (-2 2 -2 2 40 40) endgencartesiansurf
+instance example1 "(7*x*y)/exp((x^2)+(y^2))" endinstance
 
-linemesh "((y^2)/1.5)-((x^2)/2)" (-3 3 -3 3 40 40) endlinemesh
+gencartesiansurf "((y^2)/1.5)-((x^2)/2)" (-3 3 -3 3 40 40) endgencartesiansurf
 instance example2 "((y^2)/1.5)-((x^2)/2)" translate (12 0 0) endinstance
 
-linemesh "sin(10(x^2+y^2))/10" (-3 3 -3 3 300 300) endlinemesh
+gencartesiansurf "sin(10(x^2+y^2))/10" (-3 3 -3 3 30 30) endgencartesiansurf
 instance example3 "sin(10(x^2+y^2))/10" translate (-12 0 0) endinstance
 
-linemesh "sin(5x)*cos(5y)/5" (-3 3 -3 3 300 300) endlinemesh
+gencartesiansurf "sin(5x)*cos(5y)/5" (-3 3 -3 3 30 30) endgencartesiansurf
 instance example4 "sin(5x)*cos(5y)/5" translate (0 -12 0) endinstance
 ````
 
@@ -277,11 +277,11 @@ fragment VALID_ID_FUNC : VALID_ID_CHAR | '(' | ')' | '*' | '/' | '+' | '!' | '%'
 fragment QUOTE : '"' ;
 
 command
-   : open='linemesh' name=ident LPAREN expression expression expression expression expression expression RPAREN end='endlinemesh' # CmdExprListOne
+   : open='gencartesiansurf' name=ident LPAREN expression expression expression expression expression expression RPAREN end='endgencartesiansurf' # CmdExprListOne
    ;
 ````
 
-The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/linemesh).
+The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/GenCartesianSurf).
 
 ### Generator: General Parametric Surface
 The general parametric surface generator takes in 3 functions in the form of x(u,v), y(u,v), and z(u,v), along with parameters specifying the range and number of segments of u and v. This function can draw any mathematical surface that can be defined as 3 parametric equations.
@@ -312,35 +312,35 @@ Setting x'(u,v)=-x(u,v), y'(u,v)=-y(u,v), z'(u,v)=-z(u,v) gives us the correct c
 
 #### NOM Code Example
 ````
-linemeshparametric "(0.5*(0.4-1*cos(u)*cos(v))+0.96*cos(u))/(1-0.4*cos(u)*cos(v))|(0.98*sin(u)*(1-0.5*cos(v)))/(1-0.4*cos(u)*cos(v))|(0.98*sin(v)*(0.4*cos(u)-0.5))/(1-0.48*cos(u)*cos(v))" (0 6.28318 0 6.28318 60 60) endlinemeshparametric
+genparametricsurf "(0.5*(0.4-1*cos(u)*cos(v))+0.96*cos(u))/(1-0.4*cos(u)*cos(v))|(0.98*sin(u)*(1-0.5*cos(v)))/(1-0.4*cos(u)*cos(v))|(0.98*sin(v)*(0.4*cos(u)-0.5))/(1-0.48*cos(u)*cos(v))" (0 6.28318 0 6.28318 60 60) endgenparametricsurf
 instance dupin1 "(0.5*(0.4-1*cos(u)*cos(v))+0.96*cos(u))/(1-0.4*cos(u)*cos(v))|(0.98*sin(u)*(1-0.5*cos(v)))/(1-0.4*cos(u)*cos(v))|(0.98*sin(v)*(0.4*cos(u)-0.5))/(1-0.48*cos(u)*cos(v))" translate (6 0 0) endinstance
 
-linemeshparametric "(sin(5*u)*cos(5*v)+4)*(cos(u)*sin(v)/4)|(sin(5*u)*cos(5*v)+4)*(sin(u)*sin(v))/4|(sin(5*u)*cos(5*v)+4)*(cos(v)/4)" (-3.14159 3.14159 -3.14159 0 100 100) endlinemeshparametric
+genparametricsurf "(sin(5*u)*cos(5*v)+4)*(cos(u)*sin(v)/4)|(sin(5*u)*cos(5*v)+4)*(sin(u)*sin(v))/4|(sin(5*u)*cos(5*v)+4)*(cos(v)/4)" (-3.14159 3.14159 -3.14159 0 100 100) endgenparametricsurf
 instance lumpysphere "(sin(5*u)*cos(5*v)+4)*(cos(u)*sin(v)/4)|(sin(5*u)*cos(5*v)+4)*(sin(u)*sin(v))/4|(sin(5*u)*cos(5*v)+4)*(cos(v)/4)" translate (-6 0 0) endinstance
 
-linemeshparametric "sin(v)*(2+cos(3*u))*cos(2*u)|sin(v)*(2+cos(3*u))*sin(2*u)|sin(v)*cos(v)*(sin(3*u))" (0 6.28318 0 1.0472 60 20) endlinemeshparametric
+genparametricsurf "sin(v)*(2+cos(3*u))*cos(2*u)|sin(v)*(2+cos(3*u))*sin(2*u)|sin(v)*cos(v)*(sin(3*u))" (0 6.28318 0 1.0472 60 20) endgenparametricsurf
 instance tknot23 "sin(v)*(2+cos(3*u))*cos(2*u)|sin(v)*(2+cos(3*u))*sin(2*u)|sin(v)*cos(v)*(sin(3*u))" translate (0 -6 0) endinstance
 
-linemeshparametric "(5/4)*(1-(v/6.28318530718))*cos(2*v)*(1+cos(u))+cos(2*v)|(5/4)*(1-(v/6.28318530718))*sin(2*v)*(1+cos(u))+sin(2*v)|((10*v)/6.28318530718)+(5/4)*(1-(v/6.28318530718))*sin(u)+15" (0 6.28318 -6.28318 6.28318 50 50) endlinemeshparametric
-instance seashell "(5/4)*(1-(v/6.28318530718))*cos(2*v)*(1+cos(u))+cos(2*v)|(5/4)*(1-(v/6.28318530718))*sin(2*v)*(1+cos(u))+sin(2*v)|((10*v)/6.28318530718)+(5/4)*(1-(v/6.28318530718))*sin(u)+15" endinstance
+genparametricsurf "-((5/4)*(1-(v/6.28318530718))*cos(2*v)*(1+cos(u))+cos(2*v))|-((5/4)*(1-(v/6.28318530718))*sin(2*v)*(1+cos(u))+sin(2*v))|-(((10*v)/6.28318530718)+(5/4)*(1-(v/6.28318530718))*sin(u)+15)" (0 6.28318 -6.28318 6.28318 50 50) endgenparametricsurf
+instance seashell "-((5/4)*(1-(v/6.28318530718))*cos(2*v)*(1+cos(u))+cos(2*v))|-((5/4)*(1-(v/6.28318530718))*sin(2*v)*(1+cos(u))+sin(2*v))|-(((10*v)/6.28318530718)+(5/4)*(1-(v/6.28318530718))*sin(u)+15)" endinstance
 ````
 
 #### Generator C++ Code Guide
 The general Cartesian and Parametric surface generators are different that the fixed shape generators because they take in a mathematical function stored as a std::string and use the package [ExprTK](https://github.com/ArashPartow/exprtk) to parse and translate the string into an object that generates outputs to the mathematical function.
 
-We begin by binding the arguments that are passed into our CLineMeshParametric class object. These parameters specify the range and number of segments (along the range) of the non-fixed variables u and v. The UpdateEntity() method is the main method that generates our surface. The code following this code block are all within our main UpdateEntity() method.
+We begin by binding the arguments that are passed into our CGenParametricSurf class object. These parameters specify the range and number of segments (along the range) of the non-fixed variables u and v. The UpdateEntity() method is the main method that generates our surface. The code following this code block are all within our main UpdateEntity() method.
 ````cpp
-DEFINE_META_OBJECT(CLineMeshParametric)
+DEFINE_META_OBJECT(CGenParametricSurf)
 {
-    BindPositionalArgument(&CLineMeshParametric::u_start, 1, 0);
-    BindPositionalArgument(&CLineMeshParametric::u_end, 1, 1);
-    BindPositionalArgument(&CLineMeshParametric::v_start, 1, 2);
-    BindPositionalArgument(&CLineMeshParametric::v_end, 1, 3);
-    BindPositionalArgument(&CLineMeshParametric::u_segs, 1, 4);
-    BindPositionalArgument(&CLineMeshParametric::v_segs, 1, 5);
+    BindPositionalArgument(&CGenParametricSurf::u_start, 1, 0);
+    BindPositionalArgument(&CGenParametricSurf::u_end, 1, 1);
+    BindPositionalArgument(&CGenParametricSurf::v_start, 1, 2);
+    BindPositionalArgument(&CGenParametricSurf::v_end, 1, 3);
+    BindPositionalArgument(&CGenParametricSurf::u_segs, 1, 4);
+    BindPositionalArgument(&CGenParametricSurf::v_segs, 1, 5);
 }
 
-void CLineMeshParametric::UpdateEntity()
+void CGenParametricSurf::UpdateEntity()
 {
 ...
 }
@@ -448,7 +448,7 @@ for (int ui = 0; ui + 1 < uCounter; ui++) {
 }
 ````
 
-The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/linemeshparametric).
+The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/GenParametricSurf).
 
 ## About
 ![](./media/headshot.png){:height="40%" width="40%"}
