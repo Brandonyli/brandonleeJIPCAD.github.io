@@ -507,7 +507,7 @@ Another surface in the BCn family, at different isolevels
 ![](./media/implicitfuncpics/bc6.png)
 
 #### Generator C++ Code Guide
-Inspiration and starter code for the Marching Cubes Algorithm is from Paul Bourke's C++ implementation found [here](http://paulbourke.net/geometry/polygonise/). Inspiration and starter code for combining the Marching Cubes Algorithm with ExprTk is from [Pablo Javier Antuna's TriangSurf program](http://w3.impa.br/~pabloant/triangulation-surfaces.html).
+Inspiration and starter code for the Marching Cubes Algorithm is from Paul Bourke's C++ implementation found [here](http://paulbourke.net/geometry/polygonise/). Inspiration and starter code for combining the Marching Cubes Algorithm with ExprTk is from Pablo Javier Antuna's [TriangSurf](http://w3.impa.br/~pabloant/triangulation-surfaces.html) program.
 
 **add code here**
 
