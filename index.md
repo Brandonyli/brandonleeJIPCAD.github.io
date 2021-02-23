@@ -466,7 +466,7 @@ By doing this iterative process at every level of z from -inf to inf, we identif
 
 ![](./media/implicitfuncpics/scatteredpoints.png){:height="60%" width="60%"}
 
-### Generator: Marching Cubes
+#### Marching Cubes
 After generating these points we still have a problem: we can calculate points that lie on the implicit surface at every level in our z-dimension, but we don't have a good way to link the layers together. This problem leads us to a different approach to generating these surfaces, the [Marching Cubes Algorithm](https://en.wikipedia.org/wiki/Marching_cubes).
 
 Without going into too much detail, the Marching Cubes Algorithm essentially splits the Euclidian 3-dimensional space that the implicit surface lies in into a 3D grid of equal sized cubes. We define an algorithm that iteratively 'marches' along all the cubes, at each point calculating whether each of the 8 vertex points of the cube lies inside or outside the implicit surface. Depending on the number of vertex points inside of the surface, we generate a different triangle face that represents what the surface's plane running through that cube might look like. Since we have 8 vertices, we have 2^8 (256) possible representations of the surface running through that cube.
