@@ -506,12 +506,224 @@ Another surface in the BCn family, at different isolevels
 ![](./media/implicitfuncpics/bc61.gif)
 ![](./media/implicitfuncpics/bc6.png)
 
+#### NOM Code Example
+```
+genimplicitsurf "(x^4)+(y^4)+(z^4)+(-5)*((x^2)+(y^2)+(z^2))+11.8" (-3 3 -3 3 -3 3 30) endgenimplicitsurf
+instance goursatTangle "(x^4)+(y^4)+(z^4)+(-5)*((x^2)+(y^2)+(z^2))+11.8" endinstance
+
+genimplicitsurf "x^4+y^4+z^4-x^2-y^2-z^2+0.5" (-2 2 -2 2 -2 2 30) endgenimplicitsurf
+instance chubbs "x^4+y^4+z^4-x^2-y^2-z^2+0.5" translate (5 0 0) endinstance
+```
+
 #### Generator C++ Code Guide
 Inspiration and starter code for the Marching Cubes Algorithm is from Paul Bourke's C++ implementation found [here](http://paulbourke.net/geometry/polygonise/). Inspiration and starter code for combining the Marching Cubes Algorithm with ExprTk is from Pablo Javier Antuna's [TriangSurf](http://w3.impa.br/~pabloant/triangulation-surfaces.html) program.
 
-**add code here**
+Definition of structures used in main functions
+```C++
+typedef exprtk::symbol_table<double> symbol_table_t;
+typedef exprtk::expression<double> expression_t;
+typedef exprtk::parser<double> parser_t;
+
+typedef struct{
+    double x, y, z;
+}Xyz;
+
+typedef struct{
+    int p[3];
+}Triangle;
+
+typedef struct{
+    Xyz p[8];
+    double val[8];
+}Gridcell;
+```
+
+Here we retrieve the implicit surface function as a std::string and set up the mathematical expression object. We then call runMarchingCubes that does the rest of the work.
+```C++
+std::string funcStr = this->GetName(); // ex. funcStr := z(x,y) = "(x^4)+(y^4)+(z^4)+(-5)*((x^2)+(y^2)+(z^2))+11.8"
+funcStr.erase(std::remove(funcStr.begin(), funcStr.end(), '"'), funcStr.end());
+
+
+// Register symbols with the symbol_table
+this->symbol_table.add_constants();
+this->symbol_table.create_variable("x");
+this->symbol_table.create_variable("y");
+this->symbol_table.create_variable("z");
+this->expression.register_symbol_table(this->symbol_table);
+
+// Instantiate parser and compile the expression
+parser_t parser;
+parser.compile(funcStr,this->expression);
+
+
+// runs marching cube algo and then creates vertices & faces
+runMarchingCubes(numSegs, xStart, yStart, zStart, xEnd, yEnd, zEnd);
+```
+
+The function runMarchingCubes calculates the cube vertices on the 3-dimensional grid that we run the Marching Cubes algorithm on. 
+```C++
+void CGenImplicitSurf::runMarchingCubes(int gridSize,
+                                            double xMin, double yMin, double zMin,
+                                            double xMax, double yMax, double zMax)
+{
+    double deltaX = (xMax-xMin)/((double)(gridSize-1));
+    double deltaY = (yMax-yMin)/((double)(gridSize-1));
+    double deltaZ = (zMax-zMin)/((double)(gridSize-1));
+
+    Gridcell grid;
+    std::vector <Xyz> vertex(15);
+    std::vector <Triangle> Triangles(10);
+    int count[2] = {0,0};
+
+    for (int i = 0; i<gridSize; i++){
+        grid.p[0].x = xMin + i*deltaX; grid.p[1].x = xMin + (i+1)*deltaX; grid.p[2].x = xMin +(i+1)*deltaX; grid.p[3].x = xMin +i*deltaX;
+        grid.p[4].x = xMin +i*deltaX; grid.p[5].x = xMin +(i+1)*deltaX; grid.p[6].x = xMin +(i+1)*deltaX; grid.p[7].x = xMin +i*deltaX;
+        for (int j = 0; j<gridSize; j++){
+            grid.p[0].y = yMin +j*deltaY; grid.p[1].y = yMin +j*deltaY; grid.p[2].y = yMin +(j+1)*deltaY; grid.p[3].y =yMin + (j+1)*deltaY;
+            grid.p[4].y =yMin + j*deltaY; grid.p[5].y = yMin +j*deltaY; grid.p[6].y =yMin + (j+1)*deltaY; grid.p[7].y = yMin +(j+1)*deltaY;
+            for (int k = 0; k<gridSize; k++){
+
+                grid.p[0].z =zMin + k*deltaZ; grid.p[1].z = zMin +k*deltaZ; grid.p[2].z = zMin +k*deltaZ; grid.p[3].z = zMin +k*deltaZ;
+                grid.p[4].z = zMin +(k+1)*deltaZ; grid.p[5].z = zMin +(k+1)*deltaZ; grid.p[6].z =zMin + (k+1)*deltaZ; grid.p[7].z =zMin + (k+1)*deltaZ;
+
+                grid.val[0] = functionXyz(grid.p[0].x, grid.p[0].y, grid.p[0].z);
+                grid.val[1] = functionXyz(grid.p[1].x, grid.p[1].y, grid.p[1].z);
+                grid.val[2] = functionXyz(grid.p[2].x, grid.p[2].y, grid.p[2].z);
+                grid.val[3] = functionXyz(grid.p[3].x, grid.p[3].y, grid.p[3].z);
+                grid.val[4] = functionXyz(grid.p[4].x, grid.p[4].y, grid.p[4].z);
+                grid.val[5] = functionXyz(grid.p[5].x, grid.p[5].y, grid.p[5].z);
+                grid.val[6] = functionXyz(grid.p[6].x, grid.p[6].y, grid.p[6].z);
+                grid.val[7] = functionXyz(grid.p[7].x, grid.p[7].y, grid.p[7].z);
+
+                polygonise(grid, vertex, Triangles, count);
+            }
+        }
+    }
+
+    int nv = count[0];
+    int nt = count[1];
+
+    addVerticesAndFaces(vertex, Triangles, nv, nt);
+    return;
+}
+```
+
+The following functions are called within addMarchingCubes.
+
+The function functionXyz is called to calculate the value from the implicit function for each vertex on every cube.
+```C++
+double CGenImplicitSurf::functionXyz(double x, double y, double z){
+    this->symbol_table.get_variable("x")->ref() = x;
+    this->symbol_table.get_variable("y")->ref() = y;
+    this->symbol_table.get_variable("z")->ref() = z;
+
+    return this->expression.value();
+}
+```
+
+The function polygonize is then called to calculate the triangle faces on the object, and VertexInterp interpolates (smoothes) the faces.
+```C++
+static int polygonise(Gridcell grid, std::vector <Xyz> &vertex, std::vector <Triangle> &Triangles, int cou[])
+{
+    int i,nTriang, nVertex;
+    int cubeindex;
+    int vertlist[12];
+
+    int edgeTable[256]={
+        0x0, 0x109, 0x203, 0x30a, ... }
+    int triTable[256][16] =
+        {{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, ...}, ... }
+	
+    cubeindex = 0;
+    if (grid.val[0] <= 0) cubeindex |= 1;
+    if (grid.val[1] <= 0) cubeindex |= 2;
+    if (grid.val[2] <= 0) cubeindex |= 4;
+    if (grid.val[3] <= 0) cubeindex |= 8;
+    if (grid.val[4] <= 0) cubeindex |= 16;
+    if (grid.val[5] <= 0) cubeindex |= 32;
+    if (grid.val[6] <= 0) cubeindex |= 64;
+    if (grid.val[7] <= 0) cubeindex |= 128;
+
+    /* Cube is entirely in/out of the surface */
+    if (edgeTable[cubeindex] == 0)
+        return 0;
+
+    /* Find the vertices where the surface intersects the cube */
+    nVertex = cou[0];
+    if ((edgeTable[cubeindex] & 1) == 1){
+        if (vertex.size() < nVertex+1 )
+            vertex.resize( 2*vertex.size() );
+        vertlist[0] = nVertex;
+        vertex[nVertex] = VertexInterp(grid.p[0],grid.p[1],grid.val[0],grid.val[1],'X');
+        nVertex++;
+    }
+    if ...
+    
+    /* Create the Triangle */
+    nTriang = cou[1];
+    i = 0;
+    for (i=0;triTable[cubeindex][i]!=-1;i+=3) {
+        if (Triangles.size() < nTriang+1 )
+            Triangles.resize( 2*Triangles.size() );
+        Triangles[nTriang].p[0] = vertlist[triTable[cubeindex][i+2  ]];
+        Triangles[nTriang].p[1] = vertlist[triTable[cubeindex][i+1]];
+        Triangles[nTriang].p[2] = vertlist[triTable[cubeindex][i]];
+        nTriang++;
+    }
+    cou[1] = nTriang;
+
+    return 1;
+}
+
+
+/*
+   Linearly interpolate the position where an isosurface cuts
+   an edge between two vertices, each with their own scalar value
+*/
+static Xyz VertexInterp(Xyz p1, Xyz p2, double valp1, double valp2, char type)
+{
+    double mu;
+    Xyz p;
+
+    if (type == 'X'){
+        p.y = p1.y; p.z = p1.z;
+        p.x = (p2.x*valp1-p1.x*valp2)/(valp1-valp2);
+    }
+    else if (type == 'Y'){
+        p.x = p1.x; p.z = p1.z;
+        p.y = (p2.y*valp1-p1.y*valp2)/(valp1-valp2);
+    }
+    else if (type == 'Z'){
+        p.x = p1.x; p.y = p1.y;
+        p.z = (p2.z*valp1-p1.z*valp2)/(valp1-valp2);
+    }
+    return(p);
+}
+```
+
+Finally, we call addVerticesAndFaces to add the vertices and faces to the scene.
+```C++
+void CGenImplicitSurf::addVerticesAndFaces(std::vector <Xyz> vertex, std::vector <Triangle> Triangles, int nv, int nt){
+    for (int i = 0; i < nv; i++){
+        AddVertex("v_" + std::to_string(i), // name ex. "v_0"
+                  { (float)vertex[i].x, (float)vertex[i].y, (float)vertex[i].z } );
+    }
+
+    for (int i = 0; i < nt; i++){
+        std::vector<std::string> face;
+        face.push_back("v_" + std::to_string(Triangles[i].p[0]));
+        face.push_back("v_" + std::to_string(Triangles[i].p[1]));
+        face.push_back("v_" + std::to_string(Triangles[i].p[2]));
+
+        AddFace("f_" + std::to_string(i), face); // name ex. "f_0"
+    }
+    return;
+}
+```
 
 The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/GenImplicitSurf).
+
+
 
 ## About
 ![](./media/headshot.png){:height="40%" width="40%"}
