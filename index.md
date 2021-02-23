@@ -6,8 +6,7 @@ The project is built using C++ as the backend, with a proprietary [NOME language
 
 Table of Contents
 =================
-**Featured Sections**
-* [Generator: General Parametric Surface](#generator-general-parametric-surface)
+**Featured Section**
 * [Generator: General Implicit Surface](#generator-general-implicit-surface)
 
 **All Sections**
