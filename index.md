@@ -209,7 +209,7 @@ The black and orange surfaces are the same 1-sided surface, but the OpenMesh pac
 ![](./media/mobstrip.gif) ![](./media/bigmobstrip.gif)
 ![](./media/mobiusstriptwists.gif)
 
-The bottom right corner has seemingly misaligned black-to-yellow faces, which is because of NOME3's face-coloring limitations (NOME3 needs to identify a front and back to a face, but a mobius strip is one continuous face. Tt is correctly generated, with the front and back face colors meeting at that corner.
+The bottom right corner has seemingly misaligned black-to-yellow faces, which is because of NOME3's face-coloring limitations (NOME3 needs to identify a front and back to a face, but a mobius strip is one continuous face. It is correctly generated, with the front and back face colors meeting at that corner.
 ![](./media/mobstripcuts.gif)
 
 The NOM file containing the C++ generator files and an example NOM file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/mobiusstrip).
