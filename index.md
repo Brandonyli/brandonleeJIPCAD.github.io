@@ -528,7 +528,7 @@ A BC8 surface at another isolevel
 
 Another surface in the BCn family, at different isolevels
 ![](./media/implicitfuncpics/bc61.gif){:height="80%" width="80%"}
-![](./media/implicitfuncpics/bc6.png)){:height="80%" width="80%"}
+![](./media/implicitfuncpics/bc6.png){:height="80%" width="80%"}
 
 A layered-sinusoidal surface
 ![](./media/implicitfuncpics/waves.gif){:height="80%" width="80%"}
