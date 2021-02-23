@@ -148,7 +148,7 @@ The NOM file containing the code can be found [here](https://github.com/Brandony
 A Klein Bottle is a 2-dimensional manifold that has a non-orientable surface in 3-dimensions. The Klein Bottle is interesting because the surface has no boundary (like a sphere), and instead the 'spout' of the bottle wraps into itself and creates a tunnel at the bottom of the 'bottle'. This Klein Bottle was built entirely using the NOME proprietary language, with a Python Notebook script generating the NOME language lines.
 
 #### The Scene
-![](./media/main.png){:height="60%" width="60%"}
+![](./media/main.png)
 ![](./media/mainAlt.png){:height="60%" width="60%"}
 
 #### The Spout and Bottom
