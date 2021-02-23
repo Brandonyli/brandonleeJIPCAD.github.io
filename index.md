@@ -9,6 +9,7 @@ Table of Contents
 **Featured Sections**
 * [Generator: General Parametric Surface](#generator-general-parametric-surface)
 * [Generator: General Implicit Surface](#generator-general-implicit-surface)
+* 
 **All Sections**
 * [How does NOME3 work?](#how-does-nome3-work)
 * [My Contributions to the NOME3 Project](#my-contributions-to-the-nome3-project)
