@@ -491,7 +491,15 @@ A BC8 surface at another isolevel
 ![](./media/implicitfuncpics/bc81.png)
 
 Another surface in the BCn family, at different isolevels
+![](./media/implicitfuncpics/bc61.gif)
+![](./media/implicitfuncpics/bc6.png)
 
+#### Generator C++ Code Guide
+Inspiration and starter code for the Marching Cubes Algorithm is from Paul Bourke's C++ implementation found [here](http://paulbourke.net/geometry/polygonise/). Inspiration and starter code for combining the Marching Cubes Algorithm with ExprTk is from [Pablo Javier Antuna's TriangSurf program](http://w3.impa.br/~pabloant/triangulation-surfaces.html).
+
+**add code here**
+
+The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/GenImplicitSurf).
 
 ## About
 ![](./media/headshot.png){:height="40%" width="40%"}
