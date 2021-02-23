@@ -519,7 +519,7 @@ instance chubbs "x^4+y^4+z^4-x^2-y^2-z^2+0.5" translate (5 0 0) endinstance
 Inspiration and starter code for the Marching Cubes Algorithm is from Paul Bourke's C++ implementation found [here](http://paulbourke.net/geometry/polygonise/). Inspiration and starter code for combining the Marching Cubes Algorithm with ExprTk is from Pablo Javier Antuna's [TriangSurf](http://w3.impa.br/~pabloant/triangulation-surfaces.html) program.
 
 Definition of structures used in main functions
-```C++
+```cpp
 typedef exprtk::symbol_table<double> symbol_table_t;
 typedef exprtk::expression<double> expression_t;
 typedef exprtk::parser<double> parser_t;
@@ -539,7 +539,7 @@ typedef struct{
 ```
 
 Here we retrieve the implicit surface function as a std::string and set up the mathematical expression object. We then call runMarchingCubes that does the rest of the work.
-```C++
+```cpp
 std::string funcStr = this->GetName(); // ex. funcStr := z(x,y) = "(x^4)+(y^4)+(z^4)+(-5)*((x^2)+(y^2)+(z^2))+11.8"
 funcStr.erase(std::remove(funcStr.begin(), funcStr.end(), '"'), funcStr.end());
 
@@ -561,7 +561,7 @@ runMarchingCubes(numSegs, xStart, yStart, zStart, xEnd, yEnd, zEnd);
 ```
 
 The function runMarchingCubes calculates the cube vertices on the 3-dimensional grid that we run the Marching Cubes algorithm on. 
-```C++
+```cpp
 void CGenImplicitSurf::runMarchingCubes(int gridSize,
                                             double xMin, double yMin, double zMin,
                                             double xMax, double yMax, double zMax)
@@ -611,7 +611,7 @@ void CGenImplicitSurf::runMarchingCubes(int gridSize,
 The following functions are called within addMarchingCubes.
 
 The function functionXyz is called to calculate the value from the implicit function for each vertex on every cube.
-```C++
+```cpp
 double CGenImplicitSurf::functionXyz(double x, double y, double z){
     this->symbol_table.get_variable("x")->ref() = x;
     this->symbol_table.get_variable("y")->ref() = y;
@@ -622,7 +622,7 @@ double CGenImplicitSurf::functionXyz(double x, double y, double z){
 ```
 
 The function polygonize is then called to calculate the triangle faces on the object, and VertexInterp interpolates (smoothes) the faces.
-```C++
+```cpp
 static int polygonise(Gridcell grid, std::vector <Xyz> &vertex, std::vector <Triangle> &Triangles, int cou[])
 {
     int i,nTriang, nVertex;
@@ -702,7 +702,7 @@ static Xyz VertexInterp(Xyz p1, Xyz p2, double valp1, double valp2, char type)
 ```
 
 Finally, we call addVerticesAndFaces to add the vertices and faces to the scene.
-```C++
+```cpp
 void CGenImplicitSurf::addVerticesAndFaces(std::vector <Xyz> vertex, std::vector <Triangle> Triangles, int nv, int nt){
     for (int i = 0; i < nv; i++){
         AddVertex("v_" + std::to_string(i), // name ex. "v_0"
