@@ -135,7 +135,8 @@ There are many steps that the NOME3 application goes through in order to generat
 My first task was to build a stress test model in order to test the capabilities of the rendering packages that NOME3 uses. My design was 3 recursive repetitions of 3-dimensional diamonds made up of triangle instances surrounded by four toruses. This fractal display was built entirely using the NOME proprietary language.
 
 #### The scene
-![](./media/hw1MainSpin.gif) ![](./media/hw1CloseUpSpinning.gif)
+![](./media/hw1MainSpin.gif)
+![](./media/hw1CloseUpSpinning.gif)
 
 #### Fractal Design
 The alternate viewing angle and zoom-in makes the recursive design of the 'fractal' shape more obvious. It becomes easier to notice that the fractal is 3 levels deep, with the smallest fractal missing the 2 tori surrounding the diamonds (due to performance frames-per-second reasons).
@@ -147,13 +148,14 @@ The NOM file containing the code can be found [here](https://github.com/Brandony
 A Klein Bottle is a 2-dimensional manifold that has a non-orientable surface in 3-dimensions. The Klein Bottle is interesting because the surface has no boundary (like a sphere), and instead the 'spout' of the bottle wraps into itself and creates a tunnel at the bottom of the 'bottle'. This Klein Bottle was built entirely using the NOME proprietary language, with a Python Notebook script generating the NOME language lines.
 
 #### The Scene
-![](./media/main.png) ![](./media/mainAlt.png)
+![](./media/main.png){:height="60%" width="60%"}
+![](./media/mainAlt.png){:height="60%" width="60%"}
 
 #### The Spout and Bottom
-![](./media/inside.gif)
+![](./media/inside.gif){:height="60%" width="60%"}
 
 The bottom of the bottle has black-colored faces, which is a pecularity of the OpenMesh software in NOME3. Fear not, it is one continuous surface.
-![](./media/bottlebottom.png)
+![](./media/bottlebottom.png){:height="60%" width="60%"}
 
 #### NOM Code Example
 This code was generated using a [Python Notebook](https://github.com/Brandonyli/brandonyli.github.io/blob/main/media/NOME%20File%20Generator%20Example.ipynb) and exported to a NOM file.
@@ -193,8 +195,9 @@ This is my generator for a sphere, which was built in C++. It takes in 5 paramet
 
 #### The Scene
 ![](./media/sphere.png)
-![](./media/sphereSegs.gif) ![](./media/sphereSideOpen.gif)
-![](./media/sphereFrontOpen.gif)
+![](./media/sphereSegs.gif){:height="60%" width="60%"}
+![](./media/sphereSideOpen.gif){:height="60%" width="60%"}
+![](./media/sphereFrontOpen.gif){:height="60%" width="60%"}
 
 The NOM file containing the C++ generator files and an example NOM file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/sphere).
 
@@ -206,11 +209,12 @@ My generator for a Mobius Strip, built in C++, takes in 4 parameters that contro
 #### The Scene
 
 The black and orange surfaces are the same 1-sided surface, but the OpenMesh package always defines both a front (orange) and back (black) side to a surface. In this case, since the front and back are the same surface they end up touching and looking like that.
-![](./media/mobstrip.gif) ![](./media/bigmobstrip.gif)
-![](./media/mobiusstriptwists.gif)
+![](./media/mobstrip.gif)
+![](./media/bigmobstrip.gif){:height="60%" width="60%"}
+![](./media/mobiusstriptwists.gif){:height="60%" width="60%"}
 
 The bottom right corner has seemingly misaligned black-to-yellow faces, which is because of NOME3's face-coloring limitations (NOME3 needs to identify a front and back to a face, but a mobius strip is one continuous face. It is correctly generated, with the front and back face colors meeting at that corner.
-![](./media/mobstripcuts.gif)
+![](./media/mobstripcuts.gif){:height="60%" width="60%"}
 
 The NOM file containing the C++ generator files and an example NOM file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/mobiusstrip).
 
@@ -221,9 +225,9 @@ My generator for a Hyperboloid, built in C++, takes in 6 parameters that control
 
 #### The Scene
 The generator supports hyperboloid of 1 sheet and 2 sheets.
-![](./media/mainhyperboloid.png)
-![](./media/1sheethyperboloid.png)
-![](./media/2sheethyperboloid.png)
+![](./media/mainhyperboloid.png){:height="60%" width="60%"}
+![](./media/1sheethyperboloid.png){:height="60%" width="60%"}
+![](./media/2sheethyperboloid.png){:height="60%" width="60%"}
 
 The NOM file containing the C++ generator files and an example NOM file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/hyperboloid).
 
