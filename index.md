@@ -487,9 +487,9 @@ for (int ui = 0; ui + 1 < uCounter; ui++) {
 The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/GenParametricSurf).
 
 ### Generator: General Implicit Surface
-Implicit surfaces are defined by f(x,y,z)=a, where a is the 'isolevel'. Implicit surfaces can be thought of as Cartesian surfaces in 4 dimensions, projected down into 3 dimensions. They are fundamentally different than explicit functions like the functions supplied to the Cartesian Surface generator described in an earlier section, which take the form z=f(x,y).
+Implicit surfaces are defined by f(x,y,z)=b, where b is the 'isolevel'. Implicit surfaces can be thought of as Euclidean surfaces in 4 dimensions, projected down into 3 dimensions. They are fundamentally different than explicit functions like the functions supplied to the Cartesian Surface generator described in an earlier section, which take the form z=f(x,y).
 
-The generation of implicit surfaces can be thought of as solving g(c)=f(X,Y,c)-a, where a scalar c is plugged into the function g and evaluated at every infinitesimally small point on the X-Y plane. We then calculate Z=g(c)+c (our function g(c) is evaluated across the X-Y plane, so Z is a matrix that describes the z-dimension, i.e. the 'height' of our function in the z-direction). We evaluate Z(c)=g(c)+c at every level of z from -inf to inf, effectively giving us identical surfaces stacked on top of each other (see image below).
+The generation of implicit surfaces can be thought of as solving g(c)=f(X,Y,c)-b, where a scalar c is plugged into the function g and evaluated at every infinitesimally small point on the X-Y plane. We then calculate Z=g(c)+c (our function g(c) is evaluated across the X-Y plane, so Z is a matrix that describes the z-dimension, i.e. the 'height' of our function in the z-direction). We evaluate Z(c)=g(c)+c at every level of z from -inf to inf, effectively giving us identical surfaces stacked on top of each other (see image below).
 
 ![](./media/implicitfuncpics/stackedsurfaces.png){:height="60%" width="60%"}
 
