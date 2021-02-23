@@ -7,7 +7,7 @@ The project is built using C++ as the backend, with a proprietary [NOME language
 Table of Contents
 =================
 **Featured Section**
-* [Generator: General Implicit Surface](#generator-general-implicit-surface)
+* [**Generator: General Implicit Surface**](#generator-general-implicit-surface)
 
 **All Sections**
 * [How does NOME3 work?](#how-does-nome3-work)
