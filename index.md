@@ -6,6 +6,10 @@ The project is built using C++ as the backend, with a proprietary [NOME language
 
 Table of Contents
 =================
+**Featured Sections**
+* [Generator: General Parametric Surface](#generator-general-parametric-surface)
+* [Generator: General Implicit Surface](#generator-general-implicit-surface)
+**All Sections**
 * [How does NOME3 work?](#how-does-nome3-work)
 * [My Contributions to the NOME3 Project](#my-contributions-to-the-nome3-project)
   * [Stress Test: Fractal Design](#stress-test-fractal-design)
@@ -15,7 +19,7 @@ Table of Contents
   * [Generator: Hyperboloid](#generator-hyperboloid)
   * [Generator: General Cartesian Surface](#generator-general-cartesian-surface)
   * [Generator: General Parametric Surface](#generator-general-parametric-surface)
-  * [Generator: General Implicit Surface](#generator-general-implicit-surface) <-- Most interesting Generator
+  * [Generator: General Implicit Surface](#generator-general-implicit-surface)
 * [About](#about)
 
 ## How does NOME3 work?
