@@ -545,6 +545,14 @@ instance altar "if((x^2+y^2>0.05)and(x+y+z>-1),(x^8+y^30+z^8-(x^4+y^50+z^4-0.3))
 ```
 ![](./media/implicitfuncpics/altar.png){:height="80%" width="80%"}
 
+An implicit surface made using a nested if statement.
+```
+genimplicitsurf "if(x>1,x^2+y^2+z^2-16,if(x>-1,x^2+y^2+z^2-9,x^2+y^2+z^2-4))" (-4 4 -4 4 -4 4 60) endgenimplicitsurf
+instance nestedcircles "if(x>1,x^2+y^2+z^2-16,if(x>-1,x^2+y^2+z^2-9,x^2+y^2+z^2-4))" endinstance
+```
+
+![](./media/implicitfuncpics/nestedIf.png){:height="80%" width="80%"}
+
 #### NOM Code Example
 ```
 genimplicitsurf "(x^4)+(y^4)+(z^4)+(-5)*((x^2)+(y^2)+(z^2))+11.8" (-3 3 -3 3 -3 3 30) endgenimplicitsurf
