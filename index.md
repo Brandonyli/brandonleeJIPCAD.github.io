@@ -529,7 +529,7 @@ Another surface in the BCn family, at different isolevels
 ![](./media/implicitfuncpics/bc61.gif){:height="80%" width="80%"}
 ![](./media/implicitfuncpics/bc6.png){:height="80%" width="80%"}
 
-A layered-sinusoidal surface
+A layered-sinusoidal surface. The orange and black colors represent the 'front' and the 'back' of each surface layer.
 ![](./media/implicitfuncpics/waves.gif){:height="80%" width="80%"}
 
 This generator can also plot implicit surfaces that rely on some condition, by using an if statement
