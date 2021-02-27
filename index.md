@@ -677,9 +677,13 @@ static int polygonise(Gridcell grid, std::vector <Xyz> &vertex, std::vector <Tri
     int vertlist[12];
 
     int edgeTable[256]={
-        0x0, 0x109, 0x203, 0x30a, ... }
-    int triTable[256][16] =
-        {{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, ...}}
+        0x0, 0x109, 0x203, 0x30a, ...
+	}
+    int triTable[256][16] = {
+    {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, ...},
+    {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, ...},
+    {...}
+    }
 	
     cubeindex = 0;
     if (grid.val[0] <= 0) cubeindex |= 1;
