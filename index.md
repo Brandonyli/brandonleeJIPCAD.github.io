@@ -681,7 +681,7 @@ static int polygonise(Gridcell grid, std::vector <Xyz> &vertex, std::vector <Tri
 	}
     int triTable[256][16] = {
     {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, ...},
-    {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, ...},
+    { 0,  8,  3, -1, -1, -1, -1, -1, -1, -1, ...},
     {...}
     }
 	
