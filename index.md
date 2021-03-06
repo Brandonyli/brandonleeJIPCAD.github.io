@@ -532,6 +532,15 @@ Another surface in the BCn family, at different isolevels.
 A layered-sinusoidal surface. The orange and black colors represent the 'front' and the 'back' of each surface layer.
 ![](./media/implicitfuncpics/waves.gif){:height="80%" width="80%"}
 
+#### NOM Code Example
+```
+genimplicitsurf "(x^4)+(y^4)+(z^4)+(-5)*((x^2)+(y^2)+(z^2))+11.8" (-3 3 -3 3 -3 3 30) endgenimplicitsurf
+instance goursatTangle "(x^4)+(y^4)+(z^4)+(-5)*((x^2)+(y^2)+(z^2))+11.8" endinstance
+
+genimplicitsurf "x^4+y^4+z^4-x^2-y^2-z^2+0.5" (-2 2 -2 2 -2 2 30) endgenimplicitsurf
+instance chubbs "x^4+y^4+z^4-x^2-y^2-z^2+0.5" translate (5 0 0) endinstance
+```
+
 This generator can also plot implicit surfaces that rely on some condition by using an if statement.
 ```
 genimplicitsurf "if((x^2+y^2+z^2<35),2-(cos(x+(1+sqrt(5))/2*y)+cos(x-(1+sqrt(5))/2*y)+cos(y+(1+sqrt(5))/2*z)+cos(y-(1+sqrt(5))/2*z)+cos(z-(1+sqrt(5))/2*x)+cos(z+(1+sqrt(5))/2*x)),1)" (-5.5 5.5 -5.5 5.5 -5.5 5.5 60) endgenimplicitsurf
@@ -552,15 +561,6 @@ instance nestedcircles "if(x>1,x^2+y^2+z^2-16,if(x>-1,x^2+y^2+z^2-9,x^2+y^2+z^2-
 ```
 
 ![](./media/implicitfuncpics/nestedIf.png){:height="80%" width="80%"}
-
-#### NOM Code Example
-```
-genimplicitsurf "(x^4)+(y^4)+(z^4)+(-5)*((x^2)+(y^2)+(z^2))+11.8" (-3 3 -3 3 -3 3 30) endgenimplicitsurf
-instance goursatTangle "(x^4)+(y^4)+(z^4)+(-5)*((x^2)+(y^2)+(z^2))+11.8" endinstance
-
-genimplicitsurf "x^4+y^4+z^4-x^2-y^2-z^2+0.5" (-2 2 -2 2 -2 2 30) endgenimplicitsurf
-instance chubbs "x^4+y^4+z^4-x^2-y^2-z^2+0.5" translate (5 0 0) endinstance
-```
 
 #### Generator C++ Code Guide
 Inspiration and starter code for the Marching Cubes Algorithm is from Paul Bourke's C++ implementation found [here](http://paulbourke.net/geometry/polygonise/). Inspiration and starter code for combining the Marching Cubes Algorithm with ExprTk is from Pablo Javier Antuna's [TriangSurf](http://w3.impa.br/~pabloant/triangulation-surfaces.html) program.
