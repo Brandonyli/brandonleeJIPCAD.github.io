@@ -612,29 +612,29 @@ A layered-sinusoidal surface. The orange and black colors represent the 'front' 
 
 #### NOM Code Example
 ```
-genimplicitsurf s0 func [(x^4)+(y^4)+(z^4)+(-5)*((x^2)+(y^2)+(z^2))+11.8] (-3 3 -3 3 -3 3 30) endgenimplicitsurf
+genimplicitsurf s0 func [(x^4)+(y^4)+(z^4)+(-5)*((x^2)+(y^2)+(z^2))+11.8] (-3 3 -3 3 -3 3 30 30 30) endgenimplicitsurf
 instance goursatTangle s0 endinstance
 
-genimplicitsurf s1 func [x^4+y^4+z^4-x^2-y^2-z^2+0.5] (-2 2 -2 2 -2 2 30) endgenimplicitsurf
+genimplicitsurf s1 func [x^4+y^4+z^4-x^2-y^2-z^2+0.5] (-2 2 -2 2 -2 2 30 30 30) endgenimplicitsurf
 instance chubbs s1 translate (5 0 0) endinstance
 ```
 
 This generator can also plot implicit surfaces that rely on some condition by using an if statement.
 ```
-genimplicitsurf s2 func [if((x^2+y^2+z^2<35),2-(cos(x+(1+sqrt(5))/2*y)+cos(x-(1+sqrt(5))/2*y)+cos(y+(1+sqrt(5))/2*z)+cos(y-(1+sqrt(5))/2*z)+cos(z-(1+sqrt(5))/2*x)+cos(z+(1+sqrt(5))/2*x)),1)] (-5.5 5.5 -5.5 5.5 -5.5 5.5 60) endgenimplicitsurf
+genimplicitsurf s2 func [if((x^2+y^2+z^2<35),2-(cos(x+(1+sqrt(5))/2*y)+cos(x-(1+sqrt(5))/2*y)+cos(y+(1+sqrt(5))/2*z)+cos(y-(1+sqrt(5))/2*z)+cos(z-(1+sqrt(5))/2*x)+cos(z+(1+sqrt(5))/2*x)),1)] (-5.5 5.5 -5.5 5.5 -5.5 5.5 60 60 60) endgenimplicitsurf
 instance wow s2 endinstance
 ```
 ![](./media/implicitfuncpics/ballmiddle.gif){:height="80%" width="80%"}
 
 ```
-genimplicitsurf s3 func [if((x^2+y^2>0.05)and(x+y+z>-1),(x^8+y^30+z^8-(x^4+y^50+z^4-0.3))*(x^2+y^2+z^2-0.5),1)] (-2 2 -2 2 -2 2 50) endgenimplicitsurf
+genimplicitsurf s3 func [if((x^2+y^2>0.05)and(x+y+z>-1),(x^8+y^30+z^8-(x^4+y^50+z^4-0.3))*(x^2+y^2+z^2-0.5),1)] (-2 2 -2 2 -2 2 50 50 50) endgenimplicitsurf
 instance altar s3 translate (-20 -20 -20) endinstance
 ```
 ![](./media/implicitfuncpics/altar.png){:height="80%" width="80%"}
 
 Our generator also supports using a nested if statement.
 ```
-genimplicitsurf s4 func [if(x>1,x^2+y^2+z^2-16,if(x>-1,x^2+y^2+z^2-9,x^2+y^2+z^2-4))] (-4 4 -4 4 -4 4 60) endgenimplicitsurf
+genimplicitsurf s4 func [if(x>1,x^2+y^2+z^2-16,if(x>-1,x^2+y^2+z^2-9,x^2+y^2+z^2-4))] (-4 4 -4 4 -4 4 60 60 60) endgenimplicitsurf
 instance nestedcircles s4 endinstance
 ```
 
