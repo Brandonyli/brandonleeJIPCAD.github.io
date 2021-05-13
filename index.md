@@ -285,6 +285,7 @@ instance example3 s3 translate (-12 0 0) endinstance
 gencartesiansurf s4 func "sin(5x)*cos(5y)/5" (-3 3 -3 3 30 30) endgencartesiansurf
 instance example4 s4 translate (0 -12 0) endinstance
 ````
+The 'func' keyword serves to tell the language parser that the following argument is a 'func' type input.
 
 #### ANTLR4 Definitions
 Adding the capability to accept functions of any general form required me to change language definitions in the ANTLR4 file. The code block below is a relevant sub-section of the ANTLR4 file that deals with lexing for the general function generator.
