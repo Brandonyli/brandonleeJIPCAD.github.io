@@ -858,7 +858,7 @@ The NOM file containing the C++ generator files, an example NOM file, and the ed
 ## About
 ![](./media/headshot.png){:height="40%" width="40%"}
 
-[Brandon Lee](https://github.com/Brandonyli/brandonyli.github.io/tree/main/Resume) is a current 4th-year at UC Berkeley majoring in Data Science and minoring in Computer Science, with an emphasis in Economics. He has taken courses in Linear Algebra, Multivariable Calculus, Discrete Math, Probability Theory, Data Structures, Low-Level Programming, Database Systems, Algorithms, Cybersecurity, Machine Learning, Natural Language Processing, and Data Science Techniques.
+[Brandon Lee](https://github.com/Brandonyli/brandonyli.github.io/tree/main/Resume) graduated from UC Berkeley in Spring 2021 with a  major in Data Science and a minor in Computer Science, with an emphasis in Economics. He has taken courses in Linear Algebra, Multivariable Calculus, Discrete Math, Probability Theory, Data Structures, Low-Level Programming, Database Systems, Algorithms, Cybersecurity, Machine Learning, Natural Language Processing, and Data Science Techniques.
 
 Previous projects include RISC-V CPU design, NP-Hard Minimum Weighted Connected Dominating Set algorithm design, Database System design, and Neural Net design. He has been a member of the NOME3 Research Team since September 2020, and has worked on generator creation, stress testing, code documentation, and compilation issue resolutions.
 
