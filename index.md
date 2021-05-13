@@ -259,7 +259,7 @@ The general cartesian surface generator takes in any function in the form of z(x
 
 This generator was tricky to implement because creating a generator that would take in any mathematical function necessitated changes to the proprietary NOME language. This required understanding ANTLR4, as well as how the language gets lexed and parsed in the NOME3 Project before reaching the generator. The language changes also needed to be stable so that the calling of meshes, groups, instances, and other generators were not affected.
 
-Functions are passed into this generator by "naming" the object as the function itself in the NOM file. This quirk allows the ANTLR parser to pass in the raw function as a std::String to the General Cartesian Surface C++ class, which then parses it into a mathematical formula, before outputting the corresponding points and faces. Functions must also be placed with quotations, see end of section for code examples.
+Functions are passed into this generator by defining the function within brackets after the 'func' keyword in the NOM file. This allows the ANTLR parser to pass in the raw function as a std::String to the General Cartesian Surface C++ class, which then parses it into a mathematical formula, before outputting the corresponding points and faces. Functions must also be placed with quotations, see end of section for code examples. The parametric and implicit generator syntaxes follow similar logic.
 
 My generator was written in C++, and takes in a function of form z(x,y) along with parameters that define the function's range and number of segments in x and y.
 
@@ -344,7 +344,7 @@ antlrcpp::Any CFileBuilder::visitCmdGeneral(NomParser::CmdGeneralContext* contex
 }
 ````
 
-This code snippet below is used by the cartesian and implicit generators (after being called from the method above) to convert the general function input into a datatype that can eventually be converted into a C++ Std String in the correct C++ generator class. The parametric generator uses 3 modified methods because it must handle 3 function inputs.
+This code snippet below is used by the cartesian and implicit generators (after being called from the method above) to convert the general function input into a datatype that can eventually be converted into a C++ std::String in the correct C++ generator class. The parametric generator uses 3 modified methods because it must handle 3 function inputs.
 ````cpp
 antlrcpp::Any CFileBuilder::visitArgFunc(NomParser::ArgFuncContext* ctx)
 {
