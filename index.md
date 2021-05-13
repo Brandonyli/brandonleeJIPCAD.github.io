@@ -666,7 +666,8 @@ typedef struct{
 Here we retrieve the implicit surface function as a std::string and set up the mathematical expression object. We then call runMarchingCubes that does the rest of the work.
 ```cpp
 std::string funcStr = this->GetFunc(); // ex. funcStr := z(x,y) = "(x^4)+(y^4)+(z^4)+(-5)*((x^2)+(y^2)+(z^2))+11.8"
-funcStr.erase(std::remove(funcStr.begin(), funcStr.end(), '"'), funcStr.end());
+funcStr.erase(std::remove(funcStr.begin(), funcStr.end(), '['), funcStr.end());
+funcStr.erase(std::remove(funcStr.begin(), funcStr.end(), ']'), funcStr.end());
 
 
 // Register symbols with the symbol_table
