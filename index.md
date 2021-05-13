@@ -261,7 +261,7 @@ This generator was tricky to implement because creating a generator that would t
 
 Functions are passed into this generator by "naming" the object as the function itself in the NOM file. This quirk allows the ANTLR parser to pass in the raw function as a std::String to the General Cartesian Surface C++ class, which then parses it into a mathematical formula, before outputting the corresponding points and faces. Functions must also be placed with quotations, see end of section for code examples.
 
-My generator was written in C++, and takes in a function of form z(x,y) along with 4 parameters that define the function's range and number of segments in x and y.
+My generator was written in C++, and takes in a function of form z(x,y) along with parameters that define the function's range and number of segments in x and y.
 
 #### The Scene
 ![](./media/mainLineMesh.png)
@@ -273,17 +273,17 @@ To decrease the jaggedness we could increase the number of segments defined for 
 
 #### NOM Code Example
 ````
-gencartesiansurf "(7*x*y)/exp((x^2)+(y^2))" (-2 2 -2 2 40 40) endgencartesiansurf
-instance example1 "(7*x*y)/exp((x^2)+(y^2))" endinstance
+gencartesiansurf s1 func [(7*x*y)/exp((x^2)+(y^2))] (-2 2 -2 2 40 40) endgencartesiansurf
+instance example1 s1 endinstance
 
-gencartesiansurf "((y^2)/1.5)-((x^2)/2)" (-3 3 -3 3 40 40) endgencartesiansurf
-instance example2 "((y^2)/1.5)-((x^2)/2)" translate (12 0 0) endinstance
+gencartesiansurf s2 func [((y^2)/1.5)-((x^2)/2)] (-3 3 -3 3 40 40) endgencartesiansurf
+instance example2 s2 translate (12 0 0) endinstance
 
-gencartesiansurf "sin(10(x^2+y^2))/10" (-3 3 -3 3 30 30) endgencartesiansurf
-instance example3 "sin(10(x^2+y^2))/10" translate (-12 0 0) endinstance
+gencartesiansurf s3 func "sin(10(x^2+y^2))/10" (-3 3 -3 3 30 30) endgencartesiansurf
+instance example3 s3 translate (-12 0 0) endinstance
 
-gencartesiansurf "sin(5x)*cos(5y)/5" (-3 3 -3 3 30 30) endgencartesiansurf
-instance example4 "sin(5x)*cos(5y)/5" translate (0 -12 0) endinstance
+gencartesiansurf s4 func "sin(5x)*cos(5y)/5" (-3 3 -3 3 30 30) endgencartesiansurf
+instance example4 s4 translate (0 -12 0) endinstance
 ````
 
 #### ANTLR4 Definitions
@@ -305,15 +305,21 @@ expression
 ident
    : IDENT
    ;
+
+argFunc : 'func' ident ;
+argFuncX : 'funcX' ident ;
+argFuncY : 'funcY' ident ;
+argFuncZ : 'funcZ' ident ;
    
-IDENT : VALID_ID_START VALID_ID_CHAR* | QUOTE VALID_ID_FUNC* QUOTE ;
+IDENT : VALID_ID_START VALID_ID_CHAR* | OPENBRACKET VALID_ID_FUNC* CLOSEBRACKET ;
 fragment VALID_ID_START : ('a' .. 'z') | ('A' .. 'Z') | '_' | '.' ;
 fragment VALID_ID_CHAR : VALID_ID_START | ('0' .. '9') ;
-fragment VALID_ID_FUNC : VALID_ID_CHAR | '(' | ')' | '*' | '/' | '+' | '!' | '%' | '=' | '^' | '-' ;
-fragment QUOTE : '"' ;
+fragment VALID_ID_FUNC : VALID_ID_CHAR | '(' | ')' | '*' | '/' | '+' | '!' | '%' | '=' | '^' | '-' | '|' | ',' | '<' | '>' ;
+fragment OPENBRACKET : '[' ;
+fragment CLOSEBRACKET : ']' ;
 
 command
-   : open='gencartesiansurf' name=ident LPAREN expression expression expression expression expression expression RPAREN end='endgencartesiansurf' # CmdExprListOne
+   : open='gencartesiansurf' name=ident argFunc LPAREN expression expression expression expression expression expression RPAREN end='endgencartesiansurf' # CmdGeneral
    ;
 ````
 
@@ -322,9 +328,9 @@ The NOM file containing the C++ generator files, an example NOM file, and the ed
 ### Generator: General Parametric Surface
 The general parametric surface generator takes in 3 functions in the form of x(u,v), y(u,v), and z(u,v), along with parameters specifying the range and number of segments of u and v. This function can draw any mathematical surface that can be defined as 3 parametric equations.
 
-Our three functions are passed in as the mesh's 'name', similar to the general cartesian surface generator. One difference is that since parametric surfaces have 3 equations, they are passed in as x(u,v), y(u,v), and z(u,v), separated by a bar delimiter and surrounded by quotes.
+Our three functions are passed in as the mesh's 'name', similar to the general cartesian surface generator. One difference is that since parametric surfaces have 3 equations, they are passed in as x(u,v), y(u,v), and z(u,v), separated by whitespace and surrounded by bracket delimiters.
 
-There are 4 parameters that define the function's range and number of segments in u and v.
+There are parameters that define the function's range and number of segments in u and v.
 
 #### The Scene
 
@@ -348,17 +354,17 @@ Setting x'(u,v)=-x(u,v), y'(u,v)=-y(u,v), z'(u,v)=-z(u,v) gives us the correct c
 
 #### NOM Code Example
 ````
-genparametricsurf "(0.5*(0.4-1*cos(u)*cos(v))+0.96*cos(u))/(1-0.4*cos(u)*cos(v))|(0.98*sin(u)*(1-0.5*cos(v)))/(1-0.4*cos(u)*cos(v))|(0.98*sin(v)*(0.4*cos(u)-0.5))/(1-0.48*cos(u)*cos(v))" (0 6.28318 0 6.28318 60 60) endgenparametricsurf
-instance dupin1 "(0.5*(0.4-1*cos(u)*cos(v))+0.96*cos(u))/(1-0.4*cos(u)*cos(v))|(0.98*sin(u)*(1-0.5*cos(v)))/(1-0.4*cos(u)*cos(v))|(0.98*sin(v)*(0.4*cos(u)-0.5))/(1-0.48*cos(u)*cos(v))" translate (6 0 0) endinstance
+genparametricsurf s1 funcX [(0.5*(0.4-1*cos(u)*cos(v))+0.96*cos(u))/(1-0.4*cos(u)*cos(v))] funcY [(0.98*sin(u)*(1-0.5*cos(v)))/(1-0.4*cos(u)*cos(v))] funcZ [(0.98*sin(v)*(0.4*cos(u)-0.5))/(1-0.48*cos(u)*cos(v))] (0 6.28318 0 6.28318 60 60) endgenparametricsurf
+instance dupin1 s1 translate (6 0 0) endinstance
 
-genparametricsurf "(sin(5*u)*cos(5*v)+4)*(cos(u)*sin(v)/4)|(sin(5*u)*cos(5*v)+4)*(sin(u)*sin(v))/4|(sin(5*u)*cos(5*v)+4)*(cos(v)/4)" (-3.14159 3.14159 -3.14159 0 100 100) endgenparametricsurf
-instance lumpysphere "(sin(5*u)*cos(5*v)+4)*(cos(u)*sin(v)/4)|(sin(5*u)*cos(5*v)+4)*(sin(u)*sin(v))/4|(sin(5*u)*cos(5*v)+4)*(cos(v)/4)" translate (-6 0 0) endinstance
+genparametricsurf s2 funcX [(sin(5*u)*cos(5*v)+4)*(cos(u)*sin(v)/4)] funcY [(sin(5*u)*cos(5*v)+4)*(sin(u)*sin(v))/4] funcZ [(sin(5*u)*cos(5*v)+4)*(cos(v)/4)] (-3.14159 3.14159 -3.14159 0 100 100) endgenparametricsurf
+instance lumpysphere s2 translate (-6 0 0) endinstance
 
-genparametricsurf "sin(v)*(2+cos(3*u))*cos(2*u)|sin(v)*(2+cos(3*u))*sin(2*u)|sin(v)*cos(v)*(sin(3*u))" (0 6.28318 0 1.0472 60 20) endgenparametricsurf
-instance tknot23 "sin(v)*(2+cos(3*u))*cos(2*u)|sin(v)*(2+cos(3*u))*sin(2*u)|sin(v)*cos(v)*(sin(3*u))" translate (0 -6 0) endinstance
+genparametricsurf s3 funcX [sin(v)*(2+cos(3*u))*cos(2*u)] funcY [sin(v)*(2+cos(3*u))*sin(2*u)] funcZ [sin(v)*cos(v)*(sin(3*u))] (0 6.28318 0 1.0472 60 20) endgenparametricsurf
+instance tknot23 s3 translate (0 -6 0) endinstance
 
-genparametricsurf "-((5/4)*(1-(v/6.28318530718))*cos(2*v)*(1+cos(u))+cos(2*v))|-((5/4)*(1-(v/6.28318530718))*sin(2*v)*(1+cos(u))+sin(2*v))|-(((10*v)/6.28318530718)+(5/4)*(1-(v/6.28318530718))*sin(u)+15)" (0 6.28318 -6.28318 6.28318 50 50) endgenparametricsurf
-instance seashell "-((5/4)*(1-(v/6.28318530718))*cos(2*v)*(1+cos(u))+cos(2*v))|-((5/4)*(1-(v/6.28318530718))*sin(2*v)*(1+cos(u))+sin(2*v))|-(((10*v)/6.28318530718)+(5/4)*(1-(v/6.28318530718))*sin(u)+15)" endinstance
+genparametricsurf s4 funcX [-((5/4)*(1-(v/6.28318530718))*cos(2*v)*(1+cos(u))+cos(2*v))] funcY [-((5/4)*(1-(v/6.28318530718))*sin(2*v)*(1+cos(u))+sin(2*v))] funcZ [-(((10*v)/6.28318530718)+(5/4)*(1-(v/6.28318530718))*sin(u)+15)] (0 6.28318 -6.28318 6.28318 50 50) endgenparametricsurf
+instance seashell s4 endinstance
 ````
 
 #### Generator C++ Code Guide
@@ -392,21 +398,18 @@ double uSegs = (double)u_segs.GetValue(0.0f);
 double vSegs = (double)v_segs.GetValue(0.0f);
 ````
 
-In this code block we clean our input string 'funcConcat' and split it into 3 strings, funcX for our X-dimension, funcY for our Y-dimension, and funcZ for our Z-dimension.
+In this code block we clean our input strings: funcX for our X-dimension, funcY for our Y-dimension, and funcZ for our Z-dimension.
 ````cpp
-std::string funcConcat = this->GetName(); // ex. funcConcat := x(u,v)|y(u,v)|z(u,v) = "cos(u)*sin(v)|sin(u)*sin(v)|cos(v)"
-funcConcat.erase(std::remove(funcConcat.begin(), funcConcat.end(), '"'), funcConcat.end());
-size_t numFuncsInString = std::count(funcConcat.begin(), funcConcat.end(), '|');
+std::string funcX = this->GetFuncX(); // ex. funcConcat := x(u,v)
+std::string funcY = this->GetFuncY(); // ex. funcConcat := y(u,v)
+std::string funcZ = this->GetFuncZ(); // ex. funcConcat := z(u,v)
 
-std::vector<std::string> tokens;
-std::string token;
-std::istringstream tokenStream(funcConcat);
-while (std::getline(tokenStream, token, '|')) {
-tokens.push_back(token);
-}
-std::string funcX = tokens[0];
-std::string funcY = tokens[1];
-std::string funcZ = tokens[2];
+funcX.erase(std::remove(funcX.begin(), funcX.end(), '['), funcX.end());
+funcX.erase(std::remove(funcX.begin(), funcX.end(), ']'), funcX.end());
+funcY.erase(std::remove(funcY.begin(), funcY.end(), '['), funcY.end());
+funcY.erase(std::remove(funcY.begin(), funcY.end(), ']'), funcY.end());
+funcZ.erase(std::remove(funcZ.begin(), funcZ.end(), '['), funcZ.end());
+funcZ.erase(std::remove(funcZ.begin(), funcZ.end(), ']'), funcZ.end());
 ````
 
 This code block contains our calls to [ExprTK](https://github.com/ArashPartow/exprtk) methods. ExprTK allows us to pass in our 3 strings and get 'mathematical function' objects in return. The symbol table registerd our non-fixed symbols u and v, and allows us to change their values on the fly. The expression_t objects are the objects we call in order to calculate our function at a given u and v. The parser parses the strings into their respective expression objects.
@@ -534,30 +537,30 @@ A layered-sinusoidal surface. The orange and black colors represent the 'front' 
 
 #### NOM Code Example
 ```
-genimplicitsurf "(x^4)+(y^4)+(z^4)+(-5)*((x^2)+(y^2)+(z^2))+11.8" (-3 3 -3 3 -3 3 30) endgenimplicitsurf
-instance goursatTangle "(x^4)+(y^4)+(z^4)+(-5)*((x^2)+(y^2)+(z^2))+11.8" endinstance
+genimplicitsurf s0 func [(x^4)+(y^4)+(z^4)+(-5)*((x^2)+(y^2)+(z^2))+11.8] (-3 3 -3 3 -3 3 30) endgenimplicitsurf
+instance goursatTangle s0 endinstance
 
-genimplicitsurf "x^4+y^4+z^4-x^2-y^2-z^2+0.5" (-2 2 -2 2 -2 2 30) endgenimplicitsurf
-instance chubbs "x^4+y^4+z^4-x^2-y^2-z^2+0.5" translate (5 0 0) endinstance
+genimplicitsurf s1 func [x^4+y^4+z^4-x^2-y^2-z^2+0.5] (-2 2 -2 2 -2 2 30) endgenimplicitsurf
+instance chubbs s1 translate (5 0 0) endinstance
 ```
 
 This generator can also plot implicit surfaces that rely on some condition by using an if statement.
 ```
-genimplicitsurf "if((x^2+y^2+z^2<35),2-(cos(x+(1+sqrt(5))/2*y)+cos(x-(1+sqrt(5))/2*y)+cos(y+(1+sqrt(5))/2*z)+cos(y-(1+sqrt(5))/2*z)+cos(z-(1+sqrt(5))/2*x)+cos(z+(1+sqrt(5))/2*x)),1)" (-5.5 5.5 -5.5 5.5 -5.5 5.5 60) endgenimplicitsurf
-instance wow "if((x^2+y^2+z^2<35),2-(cos(x+(1+sqrt(5))/2*y)+cos(x-(1+sqrt(5))/2*y)+cos(y+(1+sqrt(5))/2*z)+cos(y-(1+sqrt(5))/2*z)+cos(z-(1+sqrt(5))/2*x)+cos(z+(1+sqrt(5))/2*x)),1)" endinstance
+genimplicitsurf s2 func [if((x^2+y^2+z^2<35),2-(cos(x+(1+sqrt(5))/2*y)+cos(x-(1+sqrt(5))/2*y)+cos(y+(1+sqrt(5))/2*z)+cos(y-(1+sqrt(5))/2*z)+cos(z-(1+sqrt(5))/2*x)+cos(z+(1+sqrt(5))/2*x)),1)] (-5.5 5.5 -5.5 5.5 -5.5 5.5 60) endgenimplicitsurf
+instance wow s2 endinstance
 ```
 ![](./media/implicitfuncpics/ballmiddle.gif){:height="80%" width="80%"}
 
 ```
-genimplicitsurf "if((x^2+y^2>0.05)and(x+y+z>-1),(x^8+y^30+z^8-(x^4+y^50+z^4-0.3))*(x^2+y^2+z^2-0.5),1)" (-2 2 -2 2 -2 2 50) endgenimplicitsurf
-instance altar "if((x^2+y^2>0.05)and(x+y+z>-1),(x^8+y^30+z^8-(x^4+y^50+z^4-0.3))*(x^2+y^2+z^2-0.5),1)" translate (-20 -20 -20) endinstance
+genimplicitsurf s3 func [if((x^2+y^2>0.05)and(x+y+z>-1),(x^8+y^30+z^8-(x^4+y^50+z^4-0.3))*(x^2+y^2+z^2-0.5),1)] (-2 2 -2 2 -2 2 50) endgenimplicitsurf
+instance altar s3 translate (-20 -20 -20) endinstance
 ```
 ![](./media/implicitfuncpics/altar.png){:height="80%" width="80%"}
 
 Our generator also supports using a nested if statement.
 ```
-genimplicitsurf "if(x>1,x^2+y^2+z^2-16,if(x>-1,x^2+y^2+z^2-9,x^2+y^2+z^2-4))" (-4 4 -4 4 -4 4 60) endgenimplicitsurf
-instance nestedcircles "if(x>1,x^2+y^2+z^2-16,if(x>-1,x^2+y^2+z^2-9,x^2+y^2+z^2-4))" endinstance
+genimplicitsurf s4 func [if(x>1,x^2+y^2+z^2-16,if(x>-1,x^2+y^2+z^2-9,x^2+y^2+z^2-4))] (-4 4 -4 4 -4 4 60) endgenimplicitsurf
+instance nestedcircles s4 endinstance
 ```
 
 ![](./media/implicitfuncpics/nestedIf.png){:height="80%" width="80%"}
@@ -587,7 +590,7 @@ typedef struct{
 
 Here we retrieve the implicit surface function as a std::string and set up the mathematical expression object. We then call runMarchingCubes that does the rest of the work.
 ```cpp
-std::string funcStr = this->GetName(); // ex. funcStr := z(x,y) = "(x^4)+(y^4)+(z^4)+(-5)*((x^2)+(y^2)+(z^2))+11.8"
+std::string funcStr = this->GetFunc(); // ex. funcStr := z(x,y) = "(x^4)+(y^4)+(z^4)+(-5)*((x^2)+(y^2)+(z^2))+11.8"
 funcStr.erase(std::remove(funcStr.begin(), funcStr.end(), '"'), funcStr.end());
 
 
