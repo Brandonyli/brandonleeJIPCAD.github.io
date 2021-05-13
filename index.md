@@ -323,6 +323,80 @@ command
    ;
 ````
 
+#### Parsing Structure
+The Nome project parses .NOM files using the ANTLR4 and Qt C++ modules. Nome uses the lexical and syntactic rules defined in nom.g4 in order to parse these files and pass them into Nome's rendering engine. The modules automatically links Nome language tokens to individual arguments, which are passed into handlers defined in SyntaxTreeBuilder.cpp (and other intermediate classes) that convert these tokens into the necessary expressions and classes that are passed into various generators.
+
+The '# CmdGeneral' comment in the nom.g4 code snippet above is actually a flag that is passed into the Qt module, which links any general shape generator shapes defined in a .nom file with the correct handlers below.
+
+This handler below detects the arguments that are passed into the cartesian and implicit generators and converts them into intermediate datatypes that can be passed into the C++ generator classes. The parametric generator uses a modified handler because it must handle 3 function inputs.
+````cpp
+antlrcpp::Any CFileBuilder::visitCmdGeneral(NomParser::CmdGeneralContext* context)
+{
+    auto* cmd = new AST::ACommand(ConvertToken(context->open), ConvertToken(context->end));
+    cmd->PushPositionalArgument(visit(context->name));
+    cmd->AddNamedArgument(visit(context->argFunc()));
+    auto* list = new AST::AVector(ConvertToken(context->LPAREN()), ConvertToken(context->RPAREN()));
+    for (auto* expr : context->expression())
+        list->AddChild(visit(expr).as<AST::AExpr*>());
+    cmd->PushPositionalArgument(list);
+    return cmd;
+}
+````
+
+This code snippet below is used by the cartesian and implicit generators (after being called from the method above) to convert the general function input into a datatype that can eventually be converted into a C++ Std String in the correct C++ generator class. The parametric generator uses 3 modified methods because it must handle 3 function inputs.
+````cpp
+antlrcpp::Any CFileBuilder::visitArgFunc(NomParser::ArgFuncContext* ctx)
+{
+    AST::ANamedArgument* arg = new AST::ANamedArgument(ConvertToken(ctx->getStart()));
+    arg->AddChild(visit(ctx->ident()).as<AST::AExpr*>());
+    return arg;
+}
+````
+
+Once the arguments are correctly created, ASTSceneAdapter.cpp calls the correct generator class and passes in the name and function to the generator.
+````cpp
+void CASTSceneAdapter::VisitCommandSyncScene(AST::ACommand* cmd, CScene& scene, bool insubMesh)
+{
+...
+	TAutoPtr<CEntity> entity;
+	if (cmd->GetCommand() == "gencartesiansurf")
+	{
+	auto func = cmd->GetNamedArgument("func")->GetArgument(
+	    0)[0]; // Returns a casted AExpr that was an AIdent before casting
+	std::string funcIdentifier =
+	    static_cast<AST::AIdent*>(&func)->ToString(); // Downcast it back to an AIdent
+	entity = new CGenCartesianSurf(EntityNamePrefix + cmd->GetName(), funcIdentifier);
+	}
+	else if (cmd->GetCommand() == "genparametricsurf")
+	{
+	auto funcX = cmd->GetNamedArgument("funcX")->GetArgument(
+	    0)[0]; // Returns a casted AExpr that was an AIdent before casting
+	std::string funcIdentifierX =
+	    static_cast<AST::AIdent*>(&funcX)->ToString(); // Downcast it back to an AIdent
+	auto funcY = cmd->GetNamedArgument("funcY")->GetArgument(
+	    0)[0]; // Returns a casted AExpr that was an AIdent before casting
+	std::string funcIdentifierY =
+	    static_cast<AST::AIdent*>(&funcY)->ToString(); // Downcast it back to an AIdent
+	auto funcZ = cmd->GetNamedArgument("funcZ")->GetArgument(
+	    0)[0]; // Returns a casted AExpr that was an AIdent before casting
+	std::string funcIdentifierZ =
+	    static_cast<AST::AIdent*>(&funcZ)->ToString(); // Downcast it back to an AIdent
+	entity = new CGenParametricSurf(EntityNamePrefix + cmd->GetName(), funcIdentifierX, funcIdentifierY, funcIdentifierZ);
+	}
+	else if (cmd->GetCommand() == "genimplicitsurf")
+	{
+	auto func = cmd->GetNamedArgument("func")->GetArgument(0)[0]; // Returns a casted AExpr that was an AIdent before casting
+	std::string funcIdentifier = static_cast<AST::AIdent*>(&func)->ToString(); // Downcast it back to an AIdent
+	entity = new CGenImplicitSurf(EntityNamePrefix + cmd->GetName(), funcIdentifier);
+	}
+	else
+	{
+	entity = MakeEntity(cmd->GetCommand(), EntityNamePrefix + cmd->GetName());
+	}
+...
+}
+````
+
 The NOM file containing the C++ generator files, an example NOM file, and the edited NOM language file can be found [here](https://github.com/Brandonyli/brandonyli.github.io/tree/main/GenCartesianSurf).
 
 ### Generator: General Parametric Surface
