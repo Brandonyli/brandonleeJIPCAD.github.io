@@ -4,7 +4,7 @@ JIPCAD (Joint-Interactive-Procedural CAD) is an emerging new Computer-Aided-Desi
 
 The project is built using C++ as the backend, with a proprietary [NOME language](https://github.com/randyfan/NOME3/wiki/NOME3-Language-Reference) used as the medium in which users can build their creations. The main up-to-date GitHub repository for the JIPCAD Project, along with compilation and usage instructions, can be found [here](https://github.com/randyfan/NOME3).
 
-*Disclaimer: The JIPCAD project previously went under the project title NOME3 (Non-orientable Manifold Editor). References to JIPCAD and NOME3 are interchangable.
+*Disclaimer: The JIPCAD project previously went under the project title NOME3 (Non-orientable Manifold Editor). References to JIPCAD and NOME3 are interchangable.*
 
 Table of Contents
 =================
