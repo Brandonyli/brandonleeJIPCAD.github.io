@@ -12,8 +12,8 @@ Table of Contents
 * [**Generator: General Implicit Surface**](#generator-general-implicit-surface)
 
 **All Sections**
-* [How does NOME3 work?](#how-does-nome3-work)
-* [My Contributions to the NOME3 Project](#my-contributions-to-the-nome3-project)
+* [How does JIPCAD work?](#how-does-jipcad-work)
+* [My Contributions to the JIPCAD Project](#my-contributions-to-the-jipcad-project)
   * [Stress Test: Fractal Design](#stress-test-fractal-design)
   * [Stress Test: Klein Bottle](#stress-test-klein-bottle)
   * [Generator: Sphere](#generator-sphere)
@@ -24,12 +24,12 @@ Table of Contents
   * [Generator: General Implicit Surface](#generator-general-implicit-surface)
 * [About](#about)
 
-## How does NOME3 work?
+## How does JIPCAD work?
 
 ### Introduction
-The NOME proprietary language is built around specifying meshes, groups, and instances. Meshes and groups can be turned into instances, which are then displayed on the UI.
+The JIPCAD proprietary language is built around specifying meshes, groups, and instances. Meshes and groups can be turned into instances, which are then displayed on the UI.
 
-A mesh is any basic generator that is defined within NOME3. These basic generators can be found [here](https://github.com/randyfan/NOME3/wiki/NOME3-Language-Reference), and can be combined in order to create more advanced and geometrically complicated shapes. Basic generators have parameters that further specify their shape and look, which allows for more flexibility in design. A call to a generator takes the form:
+A mesh is any basic generator that is defined within JIPCAD. These basic generators can be found [here](https://github.com/randyfan/NOME3/wiki/NOME3-Language-Reference), and can be combined in order to create more advanced and geometrically complicated shapes. Basic generators have parameters that further specify their shape and look, which allows for more flexibility in design. A call to a generator takes the form:
 ```markdown
 generator name_of_generator (condition_1 condition_2 ...) endgenerator
 ```
@@ -66,7 +66,7 @@ instance d1 diamond scale (25 25 25) translate (0 0 -25) endinstance
 ```
 
 ### Built in C++
-Generators in the NOME3 Project are built in C++. OpenMesh points and faces are used as the underlying data structures, and ANTLR4 is used to define and parse the proprietary NOME Language.
+Generators in the NOME3 Project are built in C++. A custom implementation of meshes, faces, and points based off of OpenMesh points and faces are used as the underlying data structures, and ANTLR4 is used to define and parse the proprietary NOME Language.
 
 An example of a typical Generator File in C++:
 ```cpp
@@ -152,7 +152,7 @@ void CMobiusStrip::UpdateEntity()
 }
 ```
 
-## My Contributions to the NOME3 Project
+## My Contributions to the JIPCAD Project
 
 ### Stress Test: Fractal Design
 There are many steps that the NOME3 application goes through in order to generate an image. Upon loading in a file, NOME3 will parse the NOME language files and call the correct generator classes, create and calcualte the position of underlying OpenMesh points and faces, update with user-specified settings, and then draw them into the scene. This is very resource-intensive, and as such NOME3 is prone to crashes.
