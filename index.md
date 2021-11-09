@@ -858,7 +858,6 @@ The NOM file containing the C++ generator files, an example NOM file, and the ed
 
 
 ## About
-![](./media/headshot.png){:height="40%" width="40%"}
 
 [Brandon Lee](https://github.com/Brandonyli/brandonyli.github.io/tree/main/Resume) graduated from UC Berkeley in Spring 2021 with a  major in Data Science and a minor in Computer Science, with an emphasis in Economics. He has taken courses in Linear Algebra, Multivariable Calculus, Discrete Math, Probability Theory, Data Structures, Low-Level Programming, Database Systems, Algorithms, Cybersecurity, Machine Learning, Natural Language Processing, and Data Science Techniques.
 
