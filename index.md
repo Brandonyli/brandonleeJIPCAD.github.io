@@ -6,6 +6,8 @@ The project is built using C++ as the backend, with a proprietary [NOME language
 
 *Disclaimer: The JIPCAD project previously went under the project title NOME3 (Non-orientable Manifold Editor). References to JIPCAD and NOME3 are interchangable.*
 
+![](./media/implicitfuncpics/chubbs.png){:height="60%" width="60%"}
+
 Table of Contents
 =================
 **Featured Section**
